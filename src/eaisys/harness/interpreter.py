@@ -411,7 +411,7 @@ def verify_interpreter_isolated(
     urdf_path: str | Path,
     harnesses_root: str | Path | None = None,
     *,
-    timeout_s: float = 30.0,
+    timeout_s: float = 120.0,
     check_rotations: bool = True,
 ) -> InterpreterVerificationReport:
     """Verify an LLM-synthesized interpreter behind an AST audit + isolated child-process boundary."""
