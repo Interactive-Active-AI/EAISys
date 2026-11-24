@@ -348,8 +348,8 @@ const HERO_SIM = {
   curX: 0.54,
   curY: 0.44,
   gripClosed: false,
-  cubeX: 0.66,
-  cubeY: 0.72,
+  cubeX: 0.64,
+  cubeY: 0.735,
   holding: false,
   trail: [],
   autoTick: 0,
@@ -358,21 +358,21 @@ const HERO_SIM = {
 };
 
 const AUTO_SCRIPT = [
-  { cmd: "MV_FWD", tx: 0.66, ty: 0.46, grip: false },
-  { cmd: "MV_DOWN", tx: 0.66, ty: 0.68, grip: false },
-  { cmd: "GRASP", tx: 0.66, ty: 0.68, grip: true },
-  { cmd: "MV_UP", tx: 0.64, ty: 0.34, grip: true },
-  { cmd: "MV_BACK", tx: 0.38, ty: 0.34, grip: true },
-  { cmd: "MV_DOWN", tx: 0.38, ty: 0.68, grip: true },
-  { cmd: "RELEASE", tx: 0.38, ty: 0.68, grip: false },
+  { cmd: "MV_FWD", tx: 0.64, ty: 0.44, grip: false },
+  { cmd: "MV_DOWN", tx: 0.64, ty: 0.69, grip: false },
+  { cmd: "GRASP", tx: 0.64, ty: 0.69, grip: true },
+  { cmd: "MV_UP", tx: 0.62, ty: 0.36, grip: true },
+  { cmd: "MV_BACK", tx: 0.40, ty: 0.36, grip: true },
+  { cmd: "MV_DOWN", tx: 0.40, ty: 0.69, grip: true },
+  { cmd: "RELEASE", tx: 0.40, ty: 0.69, grip: false },
   { cmd: "MV_UP", tx: 0.44, ty: 0.42, grip: false },
-  { cmd: "MV_FWD", tx: 0.66, ty: 0.44, grip: false },
-  { cmd: "MV_DOWN", tx: 0.38, ty: 0.68, grip: false },
-  { cmd: "GRASP", tx: 0.38, ty: 0.68, grip: true },
+  { cmd: "MV_BACK", tx: 0.40, ty: 0.44, grip: false },
+  { cmd: "MV_DOWN", tx: 0.40, ty: 0.69, grip: false },
+  { cmd: "GRASP", tx: 0.40, ty: 0.69, grip: true },
   { cmd: "MV_UP", tx: 0.48, ty: 0.36, grip: true },
-  { cmd: "MV_FWD", tx: 0.66, ty: 0.38, grip: true },
-  { cmd: "MV_DOWN", tx: 0.66, ty: 0.68, grip: true },
-  { cmd: "RELEASE", tx: 0.66, ty: 0.68, grip: false },
+  { cmd: "MV_FWD", tx: 0.64, ty: 0.38, grip: true },
+  { cmd: "MV_DOWN", tx: 0.64, ty: 0.69, grip: true },
+  { cmd: "RELEASE", tx: 0.64, ty: 0.69, grip: false },
   { cmd: "MV_UP", tx: 0.54, ty: 0.42, grip: false },
 ];
 
@@ -475,17 +475,17 @@ function startHeroCanvas() {
         HERO_SIM.probePhase = (HERO_SIM.probePhase + 1) % 6;
         const probes = [
           { tok: "WIGGLE_TCP", tx: 0.50, ty: 0.44, grip: true },
-          { tok: "PROBE_J1", tx: 0.58, ty: 0.40, grip: false },
+          { tok: "PROBE_J1", tx: 0.57, ty: 0.40, grip: false },
           { tok: "PROBE_J2", tx: 0.52, ty: 0.34, grip: false },
-          { tok: "EST_J_VIS", tx: 0.65, ty: 0.52, grip: false },
-          { tok: "MV_DOWN", tx: 0.66, ty: 0.68, grip: true },
+          { tok: "EST_J_VIS", tx: 0.64, ty: 0.50, grip: false },
+          { tok: "MV_DOWN", tx: 0.64, ty: 0.69, grip: true },
           { tok: "MV_UP", tx: 0.62, ty: 0.38, grip: true },
         ];
         const p = probes[HERO_SIM.probePhase];
         HERO_SIM.targetX = p.tx;
         HERO_SIM.targetY = p.ty;
         HERO_SIM.gripClosed = p.grip;
-        const nearCube = Math.hypot(HERO_SIM.curX - HERO_SIM.cubeX, HERO_SIM.curY - (HERO_SIM.cubeY - 0.04)) < 0.13;
+        const nearCube = Math.hypot(HERO_SIM.curX - HERO_SIM.cubeX, HERO_SIM.curY - (HERO_SIM.cubeY - 0.045)) < 0.12;
         HERO_SIM.holding = p.grip && nearCube;
         if (!p.grip) HERO_SIM.holding = false;
         HERO_SIM.probeRings.push({ x: HERO_SIM.curX * W, y: HERO_SIM.curY * H, r: 6, a: 0.85 });
@@ -496,7 +496,7 @@ function startHeroCanvas() {
         HERO_SIM.targetX = s.tx;
         HERO_SIM.targetY = s.ty;
         HERO_SIM.gripClosed = s.grip;
-        if (s.cmd === "GRASP" && Math.hypot(HERO_SIM.curX - HERO_SIM.cubeX, HERO_SIM.curY - (HERO_SIM.cubeY - 0.04)) < 0.14) {
+        if (s.cmd === "GRASP" && Math.hypot(HERO_SIM.curX - HERO_SIM.cubeX, HERO_SIM.curY - (HERO_SIM.cubeY - 0.045)) < 0.13) {
           HERO_SIM.holding = true;
         }
         if (s.cmd === "RELEASE") HERO_SIM.holding = false;
@@ -505,17 +505,11 @@ function startHeroCanvas() {
     }
 
     // Spring smooth interpolation
-    HERO_SIM.curX += (HERO_SIM.targetX - HERO_SIM.curX) * 0.085;
-    HERO_SIM.curY += (HERO_SIM.targetY - HERO_SIM.curY) * 0.085;
+    HERO_SIM.curX += (HERO_SIM.targetX - HERO_SIM.curX) * 0.09;
+    HERO_SIM.curY += (HERO_SIM.targetY - HERO_SIM.curY) * 0.09;
 
-    // Cube physics (held vs resting on table)
     const tableY = H * 0.78;
-    if (HERO_SIM.holding) {
-      HERO_SIM.cubeX += (HERO_SIM.curX - HERO_SIM.cubeX) * 0.28;
-      HERO_SIM.cubeY += (HERO_SIM.curY + 0.045 - HERO_SIM.cubeY) * 0.28;
-    } else {
-      HERO_SIM.cubeY += (0.72 - HERO_SIM.cubeY) * 0.16;
-    }
+    const cubeRestY = (tableY - 13) / H;
 
     // Subtle paper drafting grid
     ctx.strokeStyle = "rgba(180, 188, 198, 0.24)";
@@ -542,20 +536,78 @@ function startHeroCanvas() {
     ctx.lineTo(W - 24, tableY);
     ctx.stroke();
 
-    // Target subtle landing mat on left
+    // Target landing mat on left
     ctx.fillStyle = "rgba(62, 98, 128, 0.1)";
-    ctx.fillRect(W * 0.31, tableY - 4, W * 0.14, 4);
+    ctx.fillRect(W * 0.33, tableY - 4, W * 0.14, 4);
 
-    // Motion trail
-    const tipX = HERO_SIM.curX * W;
-    const tipY = HERO_SIM.curY * H;
-    HERO_SIM.trail.push({ x: tipX, y: tipY });
+    // Base pedestal
+    const bx = W * 0.22;
+    const by = tableY - 2;
+
+    // Rigid arm kinematics (6-DoF 2-link vs 7-DoF true fixed-length 3-link vs Blind)
+    const desiredWristX = HERO_SIM.curX * W;
+    const desiredWristY = HERO_SIM.curY * H - 22;
+    const shoulderX = bx;
+    const shoulderY = by - (STATE.simMode === "urdf7" ? 24 : 18);
+    const strokeMain = STATE.simMode === "urdf7" ? "#6A5484" : STATE.simMode === "blind" ? "#7A6A8E" : "#3E6280";
+    const strokeSoft = STATE.simMode === "urdf7" ? "#B8ACC9" : STATE.simMode === "blind" ? "#C5B9D4" : "#9DB3C7";
+    const scale = Math.max(265, Math.min(W * 0.62, H * 1.15));
+
+    let joints = [];
+    let actualWristX = desiredWristX;
+    let actualWristY = desiredWristY;
+
+    if (STATE.simMode === "urdf7") {
+      // True fixed-length 3-link redundant cobot chain: Shoulder -> Elbow -> Forearm-Pitch -> Wrist
+      const l1 = scale * 0.37;
+      const l2 = scale * 0.35;
+      const l3 = scale * 0.26;
+      // Approach angle of link 3 into wrist adapts smoothly with horizontal reach
+      const reachFrac = Math.max(0, Math.min(1, (desiredWristX - shoulderX) / (scale * 0.75)));
+      const phi = 0.72 - reachFrac * 0.36; // ~41° down-right near base, ~21° at far reach
+      const p3x = desiredWristX - l3 * Math.cos(phi);
+      const p3y = desiredWristY - l3 * Math.sin(phi);
+      const ik = solve2LinkIK(shoulderX, shoulderY, p3x, p3y, l1, l2, 1);
+      actualWristX = ik.ex + l3 * Math.cos(phi);
+      actualWristY = ik.ey + l3 * Math.sin(phi);
+      joints = [
+        [shoulderX, shoulderY, 7],
+        [ik.jx, ik.jy, 6.5],
+        [ik.ex, ik.ey, 5.8],
+        [actualWristX, actualWristY, 4.8],
+      ];
+    } else {
+      const l1 = scale * 0.50;
+      const l2 = scale * 0.46;
+      const ik = solve2LinkIK(shoulderX, shoulderY, desiredWristX, desiredWristY, l1, l2, 1);
+      actualWristX = ik.ex;
+      actualWristY = ik.ey;
+      joints = [
+        [shoulderX, shoulderY, 7],
+        [ik.jx, ik.jy, 6.5],
+        [actualWristX, actualWristY, 5],
+      ];
+    }
+
+    const actualTipX = actualWristX;
+    const actualTipY = actualWristY + 22;
+
+    // Cube physics locked to actual solved end-effector position
+    if (HERO_SIM.holding) {
+      HERO_SIM.cubeX += (actualTipX / W - HERO_SIM.cubeX) * 0.35;
+      HERO_SIM.cubeY += (actualTipY / H - HERO_SIM.cubeY) * 0.35;
+    } else {
+      HERO_SIM.cubeY += (cubeRestY - HERO_SIM.cubeY) * 0.18;
+    }
+
+    // Motion trail bound to actual solved fingertip
+    HERO_SIM.trail.push({ x: actualTipX, y: actualTipY });
     if (HERO_SIM.trail.length > 26) HERO_SIM.trail.shift();
     if (HERO_SIM.trail.length > 2) {
       for (let i = 1; i < HERO_SIM.trail.length; i++) {
         const alpha = (i / HERO_SIM.trail.length) * 0.42;
         ctx.strokeStyle =
-          STATE.simMode === "blind"
+          STATE.simMode === "blind" || STATE.simMode === "urdf7"
             ? `rgba(106, 84, 132, ${alpha})`
             : `rgba(62, 98, 128, ${alpha})`;
         ctx.lineWidth = 2;
@@ -590,87 +642,48 @@ function startHeroCanvas() {
     ctx.stroke();
 
     // Base pedestal
-    const bx = W * 0.2;
-    const by = tableY - 2;
     ctx.fillStyle = "#2E343B";
     ctx.beginPath();
-    ctx.roundRect(bx - 22, by - 16, 44, 18, 5);
+    ctx.roundRect(bx - 22, by - (STATE.simMode === "urdf7" ? 22 : 16), 44, STATE.simMode === "urdf7" ? 24 : 18, 5);
     ctx.fill();
 
-    // Arm kinematics (6-DoF vs 7-DoF vs Blind)
-    const wristX = tipX;
-    const wristY = tipY - 24;
-    const shoulderX = bx;
-    const shoulderY = by - 18;
-    const strokeMain = STATE.simMode === "urdf7" ? "#6A5484" : STATE.simMode === "blind" ? "#7A6A8E" : "#3E6280";
-    const strokeSoft = STATE.simMode === "urdf7" ? "#B8ACC9" : STATE.simMode === "blind" ? "#C5B9D4" : "#9DB3C7";
-
-    const l1 = Math.min(W, H) * (STATE.simMode === "urdf7" ? 0.42 : 0.48);
-    const l2 = Math.min(W, H) * (STATE.simMode === "urdf7" ? 0.36 : 0.42);
-    const ik = solve2LinkIK(shoulderX, shoulderY, wristX, wristY, l1, l2, 1);
-
-    // Draw Links
+    // Draw rigid arm links cleanly from joints array
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = strokeMain;
-    ctx.lineWidth = 11;
-    ctx.beginPath();
-    ctx.moveTo(shoulderX, shoulderY);
-    ctx.lineTo(ik.jx, ik.jy);
-    ctx.stroke();
-
-    ctx.strokeStyle = strokeSoft;
-    ctx.lineWidth = 8.5;
-    ctx.beginPath();
-    ctx.moveTo(ik.jx, ik.jy);
-    if (STATE.simMode === "urdf7") {
-      // Extra 7-DoF mid-elbow joint for visual clarity
-      const mx = (ik.jx + ik.ex) * 0.52;
-      const my = (ik.jy + ik.ey) * 0.48 - 10;
-      ctx.lineTo(mx, my);
-      ctx.lineTo(ik.ex, ik.ey);
-      ctx.stroke();
-      ctx.fillStyle = "#FFFFFF";
-      ctx.strokeStyle = strokeMain;
-      ctx.lineWidth = 2.4;
+    for (let i = 0; i < joints.length - 1; i++) {
+      ctx.strokeStyle = i === 0 ? strokeMain : i === 1 ? strokeSoft : strokeMain;
+      ctx.lineWidth = i === 0 ? 11 : i === 1 ? 8.8 : 6.8;
       ctx.beginPath();
-      ctx.arc(mx, my, 5.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-    } else {
-      ctx.lineTo(ik.ex, ik.ey);
+      ctx.moveTo(joints[i][0], joints[i][1]);
+      ctx.lineTo(joints[i + 1][0], joints[i + 1][1]);
       ctx.stroke();
     }
 
-    // Wrist & parallel gripper
+    // Wrist & parallel gripper (flush with cube sides at 13.5px when closed)
     ctx.strokeStyle = "#3B4248";
     ctx.lineWidth = 5;
     ctx.beginPath();
-    ctx.moveTo(ik.ex, ik.ey);
-    ctx.lineTo(ik.ex, ik.ey + 14);
+    ctx.moveTo(actualWristX, actualWristY);
+    ctx.lineTo(actualWristX, actualWristY + 12);
     ctx.stroke();
 
-    const jawGap = HERO_SIM.gripClosed ? 10 : 19;
+    const jawGap = HERO_SIM.gripClosed ? 13.8 : 20.5;
     ctx.strokeStyle = "#2A2F34";
     ctx.lineWidth = 3.2;
     ctx.beginPath();
-    ctx.moveTo(ik.ex - jawGap, ik.ey + 14);
-    ctx.lineTo(ik.ex + jawGap, ik.ey + 14);
-    ctx.moveTo(ik.ex - jawGap, ik.ey + 14);
-    ctx.lineTo(ik.ex - jawGap, ik.ey + 30);
-    ctx.moveTo(ik.ex + jawGap, ik.ey + 14);
-    ctx.lineTo(ik.ex + jawGap, ik.ey + 30);
+    ctx.moveTo(actualWristX - jawGap, actualWristY + 12);
+    ctx.lineTo(actualWristX + jawGap, actualWristY + 12);
+    ctx.moveTo(actualWristX - jawGap, actualWristY + 12);
+    ctx.lineTo(actualWristX - jawGap, actualWristY + 30);
+    ctx.moveTo(actualWristX + jawGap, actualWristY + 12);
+    ctx.lineTo(actualWristX + jawGap, actualWristY + 30);
     ctx.stroke();
 
     // Joint circles
-    for (const [jx, jy, rad] of [
-      [shoulderX, shoulderY, 7],
-      [ik.jx, ik.jy, 6.5],
-      [ik.ex, ik.ey, 5],
-    ]) {
+    for (const [jx, jy, rad] of joints) {
       ctx.fillStyle = "#FFFFFF";
       ctx.strokeStyle = strokeMain;
-      ctx.lineWidth = 2.6;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.arc(jx, jy, rad, 0, Math.PI * 2);
       ctx.fill();
@@ -683,15 +696,15 @@ function startHeroCanvas() {
       ctx.lineWidth = 1.6;
       ctx.setLineDash([4, 3]);
       ctx.beginPath();
-      ctx.moveTo(ik.ex, ik.ey + 24);
-      ctx.lineTo(ik.ex + 32, ik.ey + 24);
-      ctx.moveTo(ik.ex, ik.ey + 24);
-      ctx.lineTo(ik.ex, ik.ey - 8);
+      ctx.moveTo(actualWristX, actualWristY + 24);
+      ctx.lineTo(actualWristX + 32, actualWristY + 24);
+      ctx.moveTo(actualWristX, actualWristY + 24);
+      ctx.lineTo(actualWristX, actualWristY - 8);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = "#98505E";
       ctx.font = "600 10px ui-monospace, monospace";
-      ctx.fillText("J_vis (+X, +Z)", ik.ex + 10, ik.ey + 38);
+      ctx.fillText("J_vis (+X, +Z)", actualWristX + 10, actualWristY + 38);
     }
 
     requestAnimationFrame(frame);
