@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Unseen 7-DoF Kinova Gen3 with 4 continuous joints (no sidecar required) -->
+<robot name="kinova_gen3">
+  <link name="base_link"/>
+  <link name="shoulder_link"/>
+  <link name="half_arm_1_link"/>
+  <link name="half_arm_2_link"/>
+  <link name="forearm_link"/>
+  <link name="spherical_wrist_1_link"/>
+  <link name="spherical_wrist_2_link"/>
+  <link name="bracelet_link"/>
+  <link name="gen3_tcp"/>
+  <link name="left_finger"/>
+  <link name="right_finger"/>
+
+  <joint name="joint_1" type="continuous">
+    <origin xyz="0 0 0.15643" rpy="3.141592653589793 0 0"/>
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0 0.005375 -0.12838" rpy="1.5707963267948966 0 0"/>
+    <parent link="shoulder_link"/>
+    <child link="half_arm_1_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.41" upper="2.41" effort="39" velocity="1.396"/>
+  </joint>
+  <joint name="joint_3" type="continuous">
+    <origin xyz="0 -0.21038 -0.006375" rpy="-1.5707963267948966 0 0"/>
+    <parent link="half_arm_1_link"/>
+    <child link="half_arm_2_link"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <joint name="joint_4" type="revolute">
+    <origin xyz="0 0.006375 -0.21038" rpy="1.5707963267948966 0 0"/>
+    <parent link="half_arm_2_link"/>
+    <child link="forearm_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.66" upper="2.66" effort="39" velocity="1.396"/>
+  </joint>
+  <joint name="joint_5" type="continuous">
+    <origin xyz="0 -0.20843 -0.006375" rpy="-1.5707963267948966 0 0"/>
+    <parent link="forearm_link"/>
+    <child link="spherical_wrist_1_link"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <joint name="joint_6" type="revolute">
+    <origin xyz="0 0.00017505 -0.10593" rpy="1.5707963267948966 0 0"/>
+    <parent link="spherical_wrist_1_link"/>
+    <child link="spherical_wrist_2_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.23" upper="2.23" effort="9" velocity="1.22"/>
+  </joint>
+  <joint name="joint_7" type="continuous">
+    <origin xyz="0 -0.10593 -0.00017505" rpy="-1.5707963267948966 0 0"/>
+    <parent link="spherical_wrist_2_link"/>
+    <child link="bracelet_link"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <joint name="bracelet_to_tcp" type="fixed">
+    <origin xyz="0 0 -0.18" rpy="3.141592653589793 0 0"/>
+    <parent link="bracelet_link"/>
+    <child link="gen3_tcp"/>
+  </joint>
+  <joint name="left_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="gen3_tcp"/>
+    <child link="left_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2"/>
+  </joint>
+  <joint name="right_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="gen3_tcp"/>
+    <child link="right_finger"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2"/>
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0"/>
+  </joint>
+</robot>

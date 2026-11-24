@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "EAISys: One Brain for Any Robot Body — URDF-Zero-Shot & URDF-Free Self-Probing Robot Harness"
+message: "If you use EAISys in your research or engineering, please cite this repository."
+type: software
+version: "0.3.0"
+date-released: "2026-11-23"
+license: Apache-2.0
+repository-code: "https://github.com/Interactive-Active-AI/EAISys"
+url: "https://interactive-active-ai.github.io/EAISys/"
+authors:
+  - name: "EAISys Contributors"
+    affiliation: "Interactive-Active-AI (IAAI)"
+keywords:
+  - embodied-ai
+  - robotics
+  - urdf
+  - robot-use-agent
+  - vision-language-models
+  - mujoco
+  - zero-privilege

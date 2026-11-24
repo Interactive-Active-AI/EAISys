@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bimanual Interbotix ViperX-300s (ALOHA / RoboTwin 14D convention) -->
+<robot name="aloha">
+  <link name="table_base"/>
+
+  <!-- Left VX300s -->
+  <link name="left_base_link"/>
+  <link name="left_shoulder_link"/>
+  <link name="left_upper_arm_link"/>
+  <link name="left_upper_forearm_link"/>
+  <link name="left_lower_forearm_link"/>
+  <link name="left_wrist_link"/>
+  <link name="left_gripper_link"/>
+  <link name="left_ee_tcp"/>
+  <link name="left_finger"/>
+
+  <joint name="left_mount" type="fixed">
+    <origin xyz="0.0 0.24 0.0" rpy="0 0 0"/>
+    <parent link="table_base"/>
+    <child link="left_base_link"/>
+  </joint>
+  <joint name="left_waist" type="revolute">
+    <origin xyz="0 0 0.0787" rpy="0 0 0"/>
+    <parent link="left_base_link"/>
+    <child link="left_shoulder_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="left_shoulder" type="revolute">
+    <origin xyz="0 0 0.04805" rpy="0 0 0"/>
+    <parent link="left_shoulder_link"/>
+    <child link="left_upper_arm_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.85005" upper="1.76278" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="left_elbow" type="revolute">
+    <origin xyz="0.05955 0 0.3" rpy="3.141592653589793 0 0"/>
+    <parent link="left_upper_arm_link"/>
+    <child link="left_upper_forearm_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.60570" upper="1.76278" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="left_forearm_roll" type="revolute">
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+    <parent link="left_upper_forearm_link"/>
+    <child link="left_lower_forearm_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="left_wrist_angle" type="revolute">
+    <origin xyz="0.1 0 0" rpy="0 0 0"/>
+    <parent link="left_lower_forearm_link"/>
+    <child link="left_wrist_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-2.26893" upper="1.86750" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="left_wrist_rotate" type="revolute">
+    <origin xyz="0.069744 0 0" rpy="-3.141592653589793 0 0"/>
+    <parent link="left_wrist_link"/>
+    <child link="left_gripper_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="left_tcp_fixed" type="fixed">
+    <origin xyz="0.10 0 0" rpy="0 0 0"/>
+    <parent link="left_gripper_link"/>
+    <child link="left_ee_tcp"/>
+  </joint>
+  <joint name="left_gripper" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="left_ee_tcp"/>
+    <child link="left_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.074" effort="20" velocity="0.2"/>
+  </joint>
+
+  <!-- Right VX300s -->
+  <link name="right_base_link"/>
+  <link name="right_shoulder_link"/>
+  <link name="right_upper_arm_link"/>
+  <link name="right_upper_forearm_link"/>
+  <link name="right_lower_forearm_link"/>
+  <link name="right_wrist_link"/>
+  <link name="right_gripper_link"/>
+  <link name="right_ee_tcp"/>
+  <link name="right_finger"/>
+
+  <joint name="right_mount" type="fixed">
+    <origin xyz="0.0 -0.24 0.0" rpy="0 0 0"/>
+    <parent link="table_base"/>
+    <child link="right_base_link"/>
+  </joint>
+  <joint name="right_waist" type="revolute">
+    <origin xyz="0 0 0.0787" rpy="0 0 0"/>
+    <parent link="right_base_link"/>
+    <child link="right_shoulder_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="right_shoulder" type="revolute">
+    <origin xyz="0 0 0.04805" rpy="0 0 0"/>
+    <parent link="right_shoulder_link"/>
+    <child link="right_upper_arm_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.85005" upper="1.76278" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="right_elbow" type="revolute">
+    <origin xyz="0.05955 0 0.3" rpy="3.141592653589793 0 0"/>
+    <parent link="right_upper_arm_link"/>
+    <child link="right_upper_forearm_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.60570" upper="1.76278" effort="50" velocity="3.14"/>
+  </joint>
+  <joint name="right_forearm_roll" type="revolute">
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+    <parent link="right_upper_forearm_link"/>
+    <child link="right_lower_forearm_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="right_wrist_angle" type="revolute">
+    <origin xyz="0.1 0 0" rpy="0 0 0"/>
+    <parent link="right_lower_forearm_link"/>
+    <child link="right_wrist_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-2.26893" upper="1.86750" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="right_wrist_rotate" type="revolute">
+    <origin xyz="0.069744 0 0" rpy="-3.141592653589793 0 0"/>
+    <parent link="right_wrist_link"/>
+    <child link="right_gripper_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="30" velocity="3.14"/>
+  </joint>
+  <joint name="right_tcp_fixed" type="fixed">
+    <origin xyz="0.10 0 0" rpy="0 0 0"/>
+    <parent link="right_gripper_link"/>
+    <child link="right_ee_tcp"/>
+  </joint>
+  <joint name="right_gripper" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="right_ee_tcp"/>
+    <child link="right_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.074" effort="20" velocity="0.2"/>
+  </joint>
+</robot>

@@ -1,0 +1,2238 @@
+{
+  "run_id": "unseen_kinova3_stack",
+  "zero_privilege": true,
+  "robot_id": "kinova3_mujoco",
+  "robosuite_robot": "Kinova3",
+  "environment": "MuJoCo 3D · robosuite Stack (Zero-Privilege RGB + Proprio Only)",
+  "unseen_embodiment": true,
+  "sidecar_used": false,
+  "task_instruction": "Pick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "fast_mode": false,
+  "success": true,
+  "video_path": "media/unseen_kinova3_stack/rollout.mp4",
+  "video_frames": 410,
+  "video_fps": 20,
+  "video_duration_s": 20.5,
+  "total_vlm_turns": 16,
+  "total_semantic_units": 50,
+  "total_vlm_tokens": 368659,
+  "total_vlm_elapsed_s": 696.588,
+  "total_pipeline_elapsed_s": 711.854,
+  "final_metrics": {
+    "mujoco_task_success": true,
+    "xy_alignment_err_m": 0.0086,
+    "red_above_green_dz_m": 0.0448
+  },
+  "stage1_urdf_and_synthesis": {
+    "urdf_export": {
+      "robosuite_robot": "Kinova3",
+      "robot_id": "kinova3_mujoco",
+      "urdf_path": "robot.urdf",
+      "actuated_joints": [
+        "Actuator1",
+        "Actuator2",
+        "Actuator3",
+        "Actuator4",
+        "Actuator5",
+        "Actuator6",
+        "Actuator7"
+      ],
+      "tcp_link": "kinova3_mujoco_tcp",
+      "mujoco_fk_agreement_err_m": 4e-07
+    },
+    "urdf_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<robot name=\"kinova3_mujoco\">\n  <link name=\"fixed_base_link\" />\n  <link name=\"shoulder_link\" />\n  <joint name=\"Actuator1\" type=\"continuous\">\n    <origin xyz=\"0 0 0.15643\" rpy=\"-3.141585 -0 0\" />\n    <parent link=\"fixed_base_link\" />\n    <child link=\"shoulder_link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"HalfArm1_Link\" />\n  <joint name=\"Actuator2\" type=\"revolute\">\n    <origin xyz=\"0 0.005375 -0.12838\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"shoulder_link\" />\n    <child link=\"HalfArm1_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.410000\" upper=\"2.410000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"HalfArm2_Link\" />\n  <joint name=\"Actuator3\" type=\"continuous\">\n    <origin xyz=\"0 -0.21038 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"HalfArm1_Link\" />\n    <child link=\"HalfArm2_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"forearm_link\" />\n  <joint name=\"Actuator4\" type=\"revolute\">\n    <origin xyz=\"0 0.006375 -0.21038\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"HalfArm2_Link\" />\n    <child link=\"forearm_link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.660000\" upper=\"2.660000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"SphericalWrist1_Link\" />\n  <joint name=\"Actuator5\" type=\"continuous\">\n    <origin xyz=\"0 -0.20843 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"forearm_link\" />\n    <child link=\"SphericalWrist1_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"SphericalWrist2_Link\" />\n  <joint name=\"Actuator6\" type=\"revolute\">\n    <origin xyz=\"0 0.00017505 -0.10593\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"SphericalWrist1_Link\" />\n    <child link=\"SphericalWrist2_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.230000\" upper=\"2.230000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"Bracelet_Link\" />\n  <joint name=\"Actuator7\" type=\"continuous\">\n    <origin xyz=\"0 -0.10593 -0.00017505\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"SphericalWrist2_Link\" />\n    <child link=\"Bracelet_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"right_hand\" />\n  <joint name=\"fixed_Bracelet_Link_to_right_hand\" type=\"fixed\">\n    <origin xyz=\"0 0 -0.0615\" rpy=\"3.141593 -0 -1.570801\" />\n    <parent link=\"Bracelet_Link\" />\n    <child link=\"right_hand\" />\n  </joint>\n  <link name=\"robotiq_85_adapter_link\" />\n  <joint name=\"fixed_right_hand_to_robotiq_85_adapter_link\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"right_hand\" />\n    <child link=\"robotiq_85_adapter_link\" />\n  </joint>\n  <link name=\"eef\" />\n  <joint name=\"fixed_robotiq_85_adapter_link_to_eef\" type=\"fixed\">\n    <origin xyz=\"0 0 0.145\" rpy=\"0 0 -1.570796\" />\n    <parent link=\"robotiq_85_adapter_link\" />\n    <child link=\"eef\" />\n  </joint>\n  <link name=\"kinova3_mujoco_tcp\" />\n  <joint name=\"fixed_to_tcp\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"eef\" />\n    <child link=\"kinova3_mujoco_tcp\" />\n  </joint>\n  <link name=\"left_finger_link\" />\n  <joint name=\"left_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"left_finger_link\" />\n    <axis xyz=\"0 1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n  </joint>\n  <link name=\"right_finger_link\" />\n  <joint name=\"right_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"right_finger_link\" />\n    <axis xyz=\"0 -1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n    <mimic joint=\"left_finger_joint\" multiplier=\"1.0\" offset=\"0.0\" />\n  </joint>\n</robot>\n",
+    "synthesized_interpreter_code": "\"\"\"URDF-grounded Kinova Gen3 interpreter with a reachable forward boundary.\"\"\"\n\nimport numpy as np\n\nfrom eaisys.types import Transform, axis_angle_to_matrix\nfrom eaisys.urdf import KinematicChainSolver\nfrom eaisys.harness.action_space import (\n    ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS,\n)\nfrom eaisys.harness.interpreter import (\n    EmbodimentInterpreter, InterpreterState, StepGroundResult,\n)\nfrom harnesses.common.urdf_interpreter_base import (\n    ChainConfig, GenericURDFInterpreter,\n)\n\n\nclass Kinova3Interpreter(GenericURDFInterpreter):\n    JOINTS = tuple(f\"Actuator{i}\" for i in range(1, 8))\n\n    def __init__(self, urdf_path: str):\n        super().__init__(\n            urdf_path=urdf_path,\n            robot_id=\"kinova3_mujoco\",\n            chains=[ChainConfig(\n                name=\"main\",\n                root_link=\"fixed_base_link\",\n                tcp_link=\"kinova3_mujoco_tcp\",\n                joint_names=self.JOINTS,\n                home_q=None,\n            )],\n            supports_mobile_base=False,\n            torso_joints=(),\n            max_gripper_width_m=2.0 * 0.0425,\n            workspace_bounds=None,\n        )\n        nodes = [self.tree.joints[name] for name in self.JOINTS]\n        lower = np.array([j.lower for j in nodes], dtype=float)\n        upper = np.array([j.upper for j in nodes], dtype=float)\n        continuous = np.array([j.is_continuous for j in nodes], dtype=bool)\n        options = dict(\n            tree=self.tree,\n            root_link=\"fixed_base_link\",\n            tcp_link=\"kinova3_mujoco_tcp\",\n            actuated_joint_names=self.JOINTS,\n            lower_limits=lower,\n            upper_limits=upper,\n            continuous_mask=continuous,\n        )\n        root = self._root(self.reset(), \"main\")\n        rng = np.random.default_rng(7)\n        lo = np.where(continuous, -1.8, np.maximum(lower, -1.8))\n        hi = np.where(continuous, 1.8, np.minimum(upper, 1.8))\n        candidates = [\n            self._homes[\"main\"].copy(),\n            *rng.uniform(lo, hi, size=(96, len(self.JOINTS))),\n        ]\n\n        for home in candidates:\n            solver = self.solvers[\"main\"]\n            quality = solver.manipulability(home, T_root=root)\n            pose = solver.fk(home, T_root=root)\n            if (abs(home[3]) < 0.35 or not np.isfinite(quality)\n                    or quality <= 1e-6 or not np.all(np.isfinite(pose.p))\n                    or pose.p[0] <= 0.28 or pose.p[2] <= 0.14):\n                continue\n            self._homes[\"main\"] = home.copy()\n            self.solvers[\"main\"] = KinematicChainSolver(\n                **options, home_q=home.copy(),\n            )\n            # Keep the forward face close enough to reach before full extension.\n            # Every home-to-face margin exceeds 0.10 m.\n            self.workspace_bounds = (\n                pose.p - np.array([0.20, 0.25, 0.18]),\n                pose.p + np.array([0.11, 0.25, 0.22]),\n            )\n            # Certify actual accepted motion to the boundary for every step mode\n            # and for a single long command; an unreachable box is insufficient.\n            valid = True\n            for step in (*STEP_MODE_UNITS.values(), 1.2):\n                probe = self.reset()\n                probe.step_m = float(step)\n                reached = False\n                for _ in range(int(np.ceil(0.16 / step)) + 2):\n                    probe, report = self.apply_unit(\"MV_FWD\", probe)\n                    if not report.accepted:\n                        break\n                    if report.clamped_by_workspace:\n                        reached = True\n                        break\n                if not reached:\n                    valid = False\n                    break\n            if valid:\n                return\n        raise ValueError(\"No nonsingular home with a reachable forward boundary.\")\n\n    def apply_unit(\n        self, unit: str, state: InterpreterState, arm: str = \"main\",\n    ) -> tuple[InterpreterState, StepGroundResult]:\n        if (arm not in self.arm_names\n                or (unit not in TRANSLATION_UNITS and unit not in ROTATION_UNITS)):\n            return super().apply_unit(unit, state, arm)\n\n        before = self.fk_tcp(state, arm)\n        setpoint = state.tcp_setpoint[arm]\n        clamped = False\n        if unit in TRANSLATION_UNITS:\n            raw = setpoint.p + state.step_m * np.array(\n                TRANSLATION_UNITS[unit], dtype=float,\n            )\n            position = np.clip(raw, *self.workspace_bounds)\n            clamped = not np.allclose(raw, position)\n            target = Transform(R=setpoint.R.copy(), p=position)\n        else:\n            rotation = axis_angle_to_matrix(\n                np.array(ROTATION_UNITS[unit], dtype=float),\n                state.rot_step_rad,\n            )\n            target = Transform(\n                R=rotation @ setpoint.R, p=setpoint.p.copy(),\n            )\n\n        result = self.solvers[arm].solve_ik(\n            target_world=target,\n            q_seed=state.arm_q[arm].copy(),\n            T_root=self._root(state, arm),\n            pos_tol_m=1e-4,\n            rot_tol_rad=1e-3,\n            rot_weight=1.0,\n            max_iters=120,\n            num_restarts=8,\n        )\n        # This arm has seven DoF, so preserve the requested orientation.\n        accepted = bool(\n            result.success and np.all(np.isfinite(result.q))\n            and np.isfinite(result.pos_err_m)\n            and np.isfinite(result.rot_err_rad)\n        )\n        if accepted:\n            state.arm_q[arm] = result.q.copy()\n            state.tcp_setpoint[arm] = self.fk_tcp(state, arm)\n        return state, StepGroundResult(\n            unit=unit,\n            arm=arm,\n            accepted=accepted,\n            clamped_by_workspace=clamped,\n            ik_pos_err_m=float(result.pos_err_m),\n            delta_tcp_world=self.fk_tcp(state, arm).p - before.p,\n            note=\"\" if accepted else \"IK target not reached.\",\n        )\n\n\ndef build_interpreter(urdf_path: str) -> EmbodimentInterpreter:\n    return Kinova3Interpreter(urdf_path)\n",
+    "synthesis_report": {
+      "robot_id": "kinova3_mujoco",
+      "model": "gpt-6.1-sol",
+      "urdf_path": "robot.urdf",
+      "output_module_path": "harnesses/embodiments/kinova3_mujoco.py",
+      "used_common_library": true,
+      "num_demos_provided": 0,
+      "passed": true,
+      "attempts": 2,
+      "total_tokens": 63176,
+      "total_elapsed_s": 337.808,
+      "verification": {
+        "robot_id": "kinova3_mujoco",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "main_reset_fk": {
+            "true_tcp_xyz": [
+              0.3995,
+              -0.552,
+              0.3222
+            ],
+            "fk_discrepancy_m": 0.0
+          },
+          "main_directional_errors_m": {
+            "MV_FWD": 0.0,
+            "MV_BACK": 9e-05,
+            "MV_LEFT": 7e-05,
+            "MV_RIGHT": 0.0,
+            "MV_UP": 0.0,
+            "MV_DOWN": 0.0
+          },
+          "main_workspace_firewall": {
+            "clamped_safely": true
+          }
+        }
+      },
+      "turns": [
+        {
+          "attempt": 1,
+          "tokens_used": 28641,
+          "elapsed_s": 65.277,
+          "passed": false,
+          "failures": [
+            "[main] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+          ],
+          "token_breakdown": {
+            "service_tier": "default",
+            "input_tokens": 27021,
+            "output_tokens": 1620,
+            "reasoning_output_tokens": 1255
+          },
+          "prompt": "You are a Frontier LLM synthesizing a concise, physically grounded semantic-action interpreter `g_E` (~90-150 lines) for a robot from its URDF.\n\n## Target Robot URDF XML\n```xml\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<robot name=\"kinova3_mujoco\">\n  <link name=\"fixed_base_link\" />\n  <link name=\"shoulder_link\" />\n  <joint name=\"Actuator1\" type=\"continuous\">\n    <origin xyz=\"0 0 0.15643\" rpy=\"-3.141585 -0 0\" />\n    <parent link=\"fixed_base_link\" />\n    <child link=\"shoulder_link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"HalfArm1_Link\" />\n  <joint name=\"Actuator2\" type=\"revolute\">\n    <origin xyz=\"0 0.005375 -0.12838\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"shoulder_link\" />\n    <child link=\"HalfArm1_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.410000\" upper=\"2.410000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"HalfArm2_Link\" />\n  <joint name=\"Actuator3\" type=\"continuous\">\n    <origin xyz=\"0 -0.21038 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"HalfArm1_Link\" />\n    <child link=\"HalfArm2_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"forearm_link\" />\n  <joint name=\"Actuator4\" type=\"revolute\">\n    <origin xyz=\"0 0.006375 -0.21038\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"HalfArm2_Link\" />\n    <child link=\"forearm_link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.660000\" upper=\"2.660000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"SphericalWrist1_Link\" />\n  <joint name=\"Actuator5\" type=\"continuous\">\n    <origin xyz=\"0 -0.20843 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"forearm_link\" />\n    <child link=\"SphericalWrist1_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"SphericalWrist2_Link\" />\n  <joint name=\"Actuator6\" type=\"revolute\">\n    <origin xyz=\"0 0.00017505 -0.10593\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"SphericalWrist1_Link\" />\n    <child link=\"SphericalWrist2_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.230000\" upper=\"2.230000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"Bracelet_Link\" />\n  <joint name=\"Actuator7\" type=\"continuous\">\n    <origin xyz=\"0 -0.10593 -0.00017505\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"SphericalWrist2_Link\" />\n    <child link=\"Bracelet_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"right_hand\" />\n  <joint name=\"fixed_Bracelet_Link_to_right_hand\" type=\"fixed\">\n    <origin xyz=\"0 0 -0.0615\" rpy=\"3.141593 -0 -1.570801\" />\n    <parent link=\"Bracelet_Link\" />\n    <child link=\"right_hand\" />\n  </joint>\n  <link name=\"robotiq_85_adapter_link\" />\n  <joint name=\"fixed_right_hand_to_robotiq_85_adapter_link\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"right_hand\" />\n    <child link=\"robotiq_85_adapter_link\" />\n  </joint>\n  <link name=\"eef\" />\n  <joint name=\"fixed_robotiq_85_adapter_link_to_eef\" type=\"fixed\">\n    <origin xyz=\"0 0 0.145\" rpy=\"0 0 -1.570796\" />\n    <parent link=\"robotiq_85_adapter_link\" />\n    <child link=\"eef\" />\n  </joint>\n  <link name=\"kinova3_mujoco_tcp\" />\n  <joint name=\"fixed_to_tcp\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"eef\" />\n    <child link=\"kinova3_mujoco_tcp\" />\n  </joint>\n  <link name=\"left_finger_link\" />\n  <joint name=\"left_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"left_finger_link\" />\n    <axis xyz=\"0 1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n  </joint>\n  <link name=\"right_finger_link\" />\n  <joint name=\"right_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"right_finger_link\" />\n    <axis xyz=\"0 -1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n    <mimic joint=\"left_finger_joint\" multiplier=\"1.0\" offset=\"0.0\" />\n  </joint>\n</robot>\n\n```\n\n## Optional Sidecar Metadata\n```yaml\nNone (raw URDF only — infer joints, TCP link, gripper width, and non-singular home_q directly from the URDF XML).\n```\n\n## Available Dataset Trajectory Statistics\nZERO demonstrations provided (strict Zero-Shot Unseen URDF onboarding).\n\n## Exact Substrate API Reference (Do NOT guess signatures — use these exact types & methods)\n\n```python\nfrom eaisys.types import Transform, axis_angle_to_matrix, rpy_to_matrix\nfrom eaisys.urdf import IKResult, KinematicChainSolver, KinematicTree, forward_kinematics_tree, parse_robot_file\nfrom eaisys.harness.action_space import MOBILE_BASE_UNITS, ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS\nfrom eaisys.harness.interpreter import EmbodimentInterpreter, InterpreterState, StepGroundResult\n\n# 1. Transform (frozen dataclass):\n#    fields: R: np.ndarray (3, 3), p: np.ndarray (3,)\n#    Transform.identity() -> Transform\n#    Transform.from_xyz_rpy(xyz=(0,0,0), rpy=(0,0,0)) -> Transform\n#    T1.compose(T2) -> Transform\n\n# 2. parse_robot_file(path: str | Path) -> KinematicTree\n#    tree.root_link: str\n#    tree.joints: dict[str, JointNode]\n#      joint.name: str, joint.joint_type: str (\"revolute\"|\"continuous\"|\"prismatic\"|\"fixed\")\n#      joint.parent: str, joint.child: str, joint.lower: float, joint.upper: float, joint.is_continuous: bool\n#    forward_kinematics_tree(tree: KinematicTree, joint_values: dict[str, float], base_transform: Transform | None = None) -> dict[str, Transform]\n\n# 3. KinematicChainSolver:\n#    solver = KinematicChainSolver(\n#        tree=tree,                              # KinematicTree\n#        root_link=root_link,                    # str (e.g., \"panda_link0\" or \"left_base_link\")\n#        tcp_link=tcp_link,                      # str (e.g., \"panda_hand_tcp\" or \"left_ee_tcp\")\n#        actuated_joint_names=joint_names_tuple, # tuple[str, ...]\n#        lower_limits=lower_np_array,            # np.ndarray shape (D,)\n#        upper_limits=upper_np_array,            # np.ndarray shape (D,)\n#        continuous_mask=cont_bool_np_array,     # np.ndarray shape (D,) dtype=bool\n#        home_q=home_q_np_array,                 # np.ndarray shape (D,)\n#    )\n#    solver.fk(q: np.ndarray, T_root: Transform | None = None) -> Transform\n#    solver.manipulability(q: np.ndarray, T_root: Transform | None = None) -> float\n#    solver.clamp_or_wrap(q: np.ndarray) -> np.ndarray\n#    ik_res: IKResult = solver.solve_ik(\n#        target_world=target_tf,   # Transform in world frame!\n#        q_seed=q_current,         # np.ndarray shape (D,)\n#        T_root=T_chain_root,      # Transform of `root_link` in world frame! (CRITICAL on bimanual/mobile robots)\n#        pos_tol_m=1.5e-3,\n#        rot_tol_rad=2.5e-2,\n#        rot_weight=1.0,           # On 6-DoF arms, fall back to rot_weight=0.15 if rot_weight=1.0 fails\n#        max_iters=120,\n#        num_restarts=8,\n#    )\n#    # IKResult fields: success: bool, q: np.ndarray, pos_err_m: float, rot_err_rad: float\n\n# 4. Action dictionaries:\n#    TRANSLATION_UNITS = {\"MV_FWD\": (1,0,0), \"MV_BACK\": (-1,0,0), \"MV_LEFT\": (0,1,0), \"MV_RIGHT\": (0,-1,0), \"MV_UP\": (0,0,1), \"MV_DOWN\": (0,0,-1)}\n#    ROTATION_UNITS = {\"ROT_ROLL_CW\": (1,0,0), \"ROT_ROLL_CCW\": (-1,0,0), \"ROT_PITCH_CW\": (0,1,0), \"ROT_PITCH_CCW\": (0,-1,0), \"ROT_YAW_CW\": (0,0,-1), \"ROT_YAW_CCW\": (0,0,1)}\n#    STEP_MODE_UNITS = {\"STEP_COARSE\": 0.04, \"STEP_FINE\": 0.02, \"STEP_ULTRA_FINE\": 0.01}\n#    MOBILE_BASE_UNITS = {\"BASE_FWD\": (0.15,0,0), \"BASE_BACK\": (-0.15,0,0), \"BASE_LEFT\": (0,0.15,0), \"BASE_RIGHT\": (0,-0.15,0), \"BASE_YAW_LEFT\": (0,0,0.2618), \"BASE_YAW_RIGHT\": (0,0,-0.2618)}\n\n# 5. EmbodimentInterpreter abstract methods & return types (MUST implement ALL FIVE!):\n#    class MyInterpreter(EmbodimentInterpreter):\n#        robot_id = \"...\"\n#        arm_names = (\"main\",)  # or (\"left\", \"right\")\n#        supports_mobile_base = False\n#        max_gripper_width_m = 0.08\n#        workspace_bounds = (np.array([...]), np.array([...]))\n#\n#        def arm_joint_names(self, arm: str = \"main\") -> tuple[str, ...]: ...\n#        def tcp_link_name(self, arm: str = \"main\") -> str: ...\n#        def reset(self) -> InterpreterState: ...\n#        def fk_tcp(self, state: InterpreterState, arm: str = \"main\") -> Transform: ...\n#        def apply_unit(self, unit: str, state: InterpreterState, arm: str = \"main\") -> tuple[InterpreterState, StepGroundResult]:\n#            # MUST return a 2-tuple `(state, StepGroundResult(...))`!\n#\n#    InterpreterState(arm_q: dict[str, np.ndarray], tcp_setpoint: dict[str, Transform], gripper_open: dict[str, float],\n#                     step_m: float = 0.02, rot_step_rad: float = 0.261799, base_se2: np.ndarray = zeros(3), torso_q: np.ndarray = zeros(0))\n#    StepGroundResult(unit: str, arm: str, accepted: bool, clamped_by_workspace: bool = False,\n#                     ik_pos_err_m: float = 0.0, delta_tcp_world: np.ndarray = zeros(3), note: str = \"\")\n```\n\n\n## Available Cross-URDF Common Library (`harnesses.common.urdf_interpreter_base`)\nImport and instantiate/subclass from `harnesses.common.urdf_interpreter_base` — write a concise (~35-60 line) embodiment module specifying this URDF's exact chains, TCP link(s), gripper width, mobile/torso flags, and non-singular home posture:\n```python\n\"\"\"Reusable URDF grounding with world-frame arm actions and body-frame base actions.\"\"\"\n\nfrom dataclasses import dataclass\nfrom itertools import product\n\nimport numpy as np\n\nfrom eaisys.types import Transform, axis_angle_to_matrix\nfrom eaisys.urdf import (\n    KinematicChainSolver, forward_kinematics_tree, parse_robot_file,\n)\nfrom eaisys.harness.action_space import (\n    MOBILE_BASE_UNITS, ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS,\n)\nfrom eaisys.harness.interpreter import (\n    EmbodimentInterpreter, InterpreterState, StepGroundResult,\n)\n\n\n@dataclass(frozen=True)\nclass ChainConfig:\n    name: str\n    root_link: str\n    tcp_link: str\n    joint_names: tuple[str, ...]\n    home_q: list[float] | None = None\n\n\nclass GenericURDFInterpreter(EmbodimentInterpreter):\n    \"\"\"Automatic boxes follow mobile bases; explicit boxes remain world-fixed.\n\n    Workspace boxes bound targets; IK still determines kinematic feasibility.\n    \"\"\"\n\n    def __init__(\n        self, urdf_path: str, robot_id: str, chains: list[ChainConfig],\n        supports_mobile_base=False, torso_joints=(),\n        max_gripper_width_m=0.08, workspace_bounds=None,\n    ):\n        self.tree = parse_robot_file(urdf_path)\n        self.robot_id = robot_id\n        self.arm_names = tuple(c.name for c in chains)\n        if not chains or len(set(self.arm_names)) != len(chains):\n            raise ValueError(\"Provide at least one chain, with unique chain names.\")\n        self._chains = {c.name: c for c in chains}\n        self.supports_mobile_base = bool(supports_mobile_base)\n        self.torso_joints = tuple(torso_joints)\n        self.max_gripper_width_m = float(max_gripper_width_m)\n        torso_nodes = [self.tree.joints[n] for n in self.torso_joints]\n        self._torso_home = np.array([\n            0.0 if j.is_continuous else float(np.clip(0.0, j.lower, j.upper))\n            for j in torso_nodes\n        ], dtype=float)\n        self._homes, self.solvers = {}, {}\n        self._workspace_corners = None\n        rng = np.random.default_rng(0)\n\n        for chain in chains:\n            names = tuple(chain.joint_names)\n            nodes = [self.tree.joints[n] for n in names]\n            lower = np.array([j.lower for j in nodes], dtype=float)\n            upper = np.array([j.upper for j in nodes], dtype=float)\n            continuous = np.array([j.is_continuous for j in nodes], dtype=bool)\n            automatic = chain.home_q is None\n            if automatic:\n                a = np.where(continuous, -2.0, np.maximum(lower, -2.0))\n                b = np.where(continuous, 2.0, np.minimum(upper, 2.0))\n                if np.any(a >= b) or not np.all(np.isfinite([a, b])):\n                    raise ValueError(f\"{chain.name}: empty home-sampling interval.\")\n                home = (a + b) / 2.0\n            else:\n                home = np.asarray(chain.home_q, dtype=float)\n            if home.shape != (len(names),) or not np.all(np.isfinite(home)):\n                raise ValueError(f\"{chain.name}: invalid home configuration.\")\n            if np.any(((home <= lower) | (home >= upper)) & ~continuous):\n                raise ValueError(f\"{chain.name}: home must be strictly inside limits.\")\n            options = dict(\n                tree=self.tree, root_link=chain.root_link, tcp_link=chain.tcp_link,\n                actuated_joint_names=names, lower_limits=lower, upper_limits=upper,\n                continuous_mask=continuous,\n            )\n            solver = KinematicChainSolver(**options, home_q=home.copy())\n            if automatic:\n                best, best_score = None, 1e-6\n                margin = (b - a) * 1e-6\n                for q in rng.uniform(a + margin, b - margin, size=(120, len(names))):\n                    # Without T_root, FK and the forward-ready test are root-local.\n                    p = solver.fk(q).p\n                    if not np.all(np.isfinite(p)) or p[0] <= 0.28 or p[2] <= 0.14:\n                        continue\n                    quality = solver.manipulability(q)\n                    if np.isfinite(quality) and quality > best_score:\n                        best, best_score = q.copy(), float(quality)\n                if best is None:\n                    raise ValueError(\n                        f\"{chain.name}: no nonsingular forward-ready home sampled; \"\n                        \"provide an explicit home_q.\"\n                    )\n                home = best\n                # Give IK restarts the selected home through the documented API.\n                solver = KinematicChainSolver(**options, home_q=home.copy())\n            else:\n                quality = solver.manipulability(home)\n                if not np.isfinite(quality) or quality <= 1e-6:\n                    raise ValueError(f\"{chain.name}: home is poorly conditioned.\")\n            self._homes[chain.name] = home.copy()\n            self.solvers[chain.name] = solver\n\n        automatic_workspace = workspace_bounds is None\n        state = self.reset()\n        if automatic_workspace:\n            points = np.array([state.tcp_setpoint[a].p for a in self.arm_names])\n            workspace_bounds = (\n                points.min(axis=0) - np.array([0.22, 0.35, 0.18]),\n                points.max(axis=0) + np.array([0.28, 0.35, 0.25]),\n            )\n        lo, hi = (np.array(v, dtype=float, copy=True) for v in workspace_bounds)\n        if (lo.shape != (3,) or hi.shape != (3,)\n                or not np.all(np.isfinite([lo, hi])) or np.any(lo >= hi)):\n            raise ValueError(\"Workspace bounds must be finite, ordered 3-vectors.\")\n        self.workspace_bounds = (lo, hi)\n        if automatic_workspace and self.supports_mobile_base:\n            self._workspace_corners = np.array(list(product(*zip(lo, hi))))\n\n    def arm_joint_names(self, arm: str = \"main\") -> tuple[str, ...]:\n        if arm not in self._chains:\n            raise ValueError(f\"Unknown arm: {arm}\")\n        return tuple(self._chains[arm].joint_names)\n\n    def tcp_link_name(self, arm: str = \"main\") -> str:\n        self.arm_joint_names(arm)\n        return self._chains[arm].tcp_link\n\n    @staticmethod\n    def _base_transform(state: InterpreterState) -> Transform:\n        x, y, yaw = state.base_se2\n        return Transform.from_xyz_rpy(xyz=(x, y, 0.0), rpy=(0.0, 0.0, yaw))\n\n    def _root(self, state: InterpreterState, arm: str) -> Transform:\n        # Virtual base joints default to zero: apply base motion exactly once.\n        return forward_kinematics_tree(\n            self.tree, dict(zip(self.torso_joints, map(float, state.torso_q))),\n            base_transform=self._base_transform(state),\n        )[self._chains[arm].root_link]\n\n    def _sync_workspace(self, state: InterpreterState):\n        if self._workspace_corners is not None:\n            T = self._base_transform(state)\n            points = self._workspace_corners @ T.R.T + T.p\n            self.workspace_bounds = (points.min(axis=0), points.max(axis=0))\n\n    def reset(self) -> InterpreterState:\n        state = InterpreterState(\n            arm_q={a: self._homes[a].copy() for a in self.arm_names},\n            tcp_setpoint={}, gripper_open={a: 1.0 for a in self.arm_names},\n            torso_q=self._torso_home.copy(), base_se2=np.zeros(3),\n            step_m=0.02, rot_step_rad=np.pi / 12,\n        )\n        state.tcp_setpoint = {a: self.fk_tcp(state, a) for a in self.arm_names}\n        self._sync_workspace(state)\n        return state\n\n    def fk_tcp(self, state: InterpreterState, arm: str = \"main\") -> Transform:\n        self.arm_joint_names(arm)\n        return self.solvers[arm].fk(state.arm_q[arm], T_root=self._root(state, arm))\n\n    def apply_unit(\n        self, unit: str, state: InterpreterState, arm: str = \"main\",\n    ) -> tuple[InterpreterState, StepGroundResult]:\n        if arm not in self._chains:\n            return state, StepGroundResult(\n                unit=unit, arm=arm, accepted=False, note=\"Unknown arm.\",\n            )\n        before = self.fk_tcp(state, arm)\n\n        def finish(ok=True, clamped=False, err=0.0, note=\"\"):\n            return state, StepGroundResult(\n                unit=unit, arm=arm, accepted=bool(ok),\n                clamped_by_workspace=bool(clamped), ik_pos_err_m=float(err),\n                delta_tcp_world=self.fk_tcp(state, arm).p - before.p, note=note,\n            )\n\n        if unit in STEP_MODE_UNITS:\n            state.step_m = float(STEP_MODE_UNITS[unit])\n            return finish()\n        if unit in (\"GRASP\", \"RELEASE\"):\n            state.gripper_open[arm] = float(unit == \"RELEASE\")\n            return finish()\n        if unit in (\"HOLD\", \"DONE\"):\n            return finish()\n        if unit in MOBILE_BASE_UNITS:\n            if not self.supports_mobile_base:\n                return finish(False, note=\"This robot has a fixed base.\")\n            dx, dy, dyaw = MOBILE_BASE_UNITS[unit]\n            yaw = state.base_se2[2]\n            c, s = np.cos(yaw), np.sin(yaw)\n            raw = state.base_se2 + np.array([c * dx - s * dy, s * dx + c * dy, dyaw])\n            candidate = raw.copy()\n            # Honor conventional virtual-base limits when present in the URDF.\n            for i, name in enumerate((\"base_x\", \"base_y\")):\n                joint = self.tree.joints.get(name)\n                if joint is not None and joint.joint_type == \"prismatic\":\n                    candidate[i] = np.clip(candidate[i], joint.lower, joint.upper)\n            limited = bool(np.any(candidate[:2] != raw[:2]))\n            candidate[2] = (candidate[2] + np.pi) % (2 * np.pi) - np.pi\n            state.base_se2 = candidate\n            for name in self.arm_names:\n                state.tcp_setpoint[name] = self.fk_tcp(state, name)\n            self._sync_workspace(state)\n            return finish(note=\"Base translation limited by URDF bounds.\" if limited else \"\")\n        if unit not in TRANSLATION_UNITS and unit not in ROTATION_UNITS:\n            return finish(False, note=f\"Unsupported action unit: {unit}\")\n\n        self._sync_workspace(state)\n        translation = unit in TRANSLATION_UNITS\n        clamped = False\n        if translation:\n            raw = before.p + state.step_m * np.array(TRANSLATION_UNITS[unit])\n            p = np.clip(raw, *self.workspace_bounds)\n            clamped = bool(np.any(raw != p))\n            target = Transform(R=before.R.copy(), p=p)\n        else:\n            R = axis_angle_to_matrix(\n                np.array(ROTATION_UNITS[unit], dtype=float), state.rot_step_rad,\n            ) @ before.R\n            target = Transform(R=R, p=before.p.copy())\n        solver = self.solvers[arm]\n        options = dict(\n            target_world=target, q_seed=state.arm_q[arm].copy(),\n            T_root=self._root(state, arm), pos_tol_m=1.5e-3, rot_tol_rad=2.5e-2,\n            max_iters=120, num_restarts=8,\n        )\n        result = solver.solve_ik(**options, rot_weight=1.0)\n        relaxed = translation and len(self.arm_joint_names(arm)) == 6 and not result.success\n        if relaxed:\n            result = solver.solve_ik(**options, rot_weight=0.15)\n        ok = result.pos_err_m <= 0.003 if relaxed else result.success\n        if not ok or not np.all(np.isfinite(result.q)) or not np.isfinite(result.pos_err_m):\n            return finish(False, clamped, result.pos_err_m, \"IK target not reached.\")\n        state.arm_q[arm] = result.q.copy()\n        state.tcp_setpoint[arm] = self.fk_tcp(state, arm)\n        return finish(\n            True, clamped, result.pos_err_m, \"Orientation relaxed.\" if relaxed else \"\",\n        )\n\n```\n\n## Required Contract for `build_interpreter(urdf_path: str) -> EmbodimentInterpreter`\n1. Set `robot_id`, `arm_names` (`(\"main\",)` for 1-arm, `(\"left\", \"right\")` for 2-arm), `supports_mobile_base` (`bool`), `max_gripper_width_m` (`float`), and `workspace_bounds = (ws_lo_np, ws_hi_np)` in world frame so `reset()` TCP has >= `0.10m` margin inside `workspace_bounds` on all 6 axes while +1.2m `MV_FWD` clamps (`clamped_by_workspace=True`) for non-mobile robots.\n2. In `reset()`, pick a **non-singular bent-elbow `home_q`** strictly inside URDF limits (if sidecar has `home_q`, verify its manipulability or sample a well-conditioned posture if raw URDF has no sidecar). Set `tcp_setpoint[arm] = self.fk_tcp(state, arm)` and `gripper_open[arm] = 1.0`.\n3. Compute chain root transform `T_root = forward_kinematics_tree(self.tree, torso_joint_dict, base_transform=T_base)[root_link]` and pass `T_root=T_root` into `solver.fk(q, T_root=T_root)` and `solver.solve_ik(..., T_root=T_root)` so `fk_tcp` matches ground-truth `forward_kinematics_tree` to `< 1e-6 m`!\n4. In `apply_unit(unit, state, arm)`:\n   - Handle `STEP_COARSE`/`STEP_FINE`/`STEP_ULTRA_FINE`, `GRASP` (`0.0`), `RELEASE` (`1.0`), `HOLD`/`DONE`.\n   - For `MV_*`: target position is `p_raw = state.tcp_setpoint[arm].p + state.step_m * np.array(TRANSLATION_UNITS[unit])`. If not `supports_mobile_base`, clip `p_clamped = np.clip(p_raw, ws_lo, ws_hi)` and set `clamped = not np.allclose(p_raw, p_clamped)`. Solve IK with `rot_weight=1.0`; on 6-DoF arms if `not ik_res.success`, retry with `rot_weight=0.15` and accept if `ik_res.pos_err_m <= 0.003`. Update `state.arm_q[arm] = ik_res.q` and `state.tcp_setpoint[arm] = self.fk_tcp(state, arm)`.\n   - For `ROT_*`: `R_new = axis_angle_to_matrix(np.array(ROTATION_UNITS[unit]), state.rot_step_rad) @ state.tcp_setpoint[arm].R`.\n   - For `BASE_*` (when `supports_mobile_base=True`): add `(dx, dy, dyaw)` in robot heading frame to `state.base_se2` and refresh `tcp_setpoint`.\n\nKeep the code clean and direct (do NOT use `inspect` reflection hacks). Output ONLY Python code in a ```python ... ``` block.\n",
+          "response_text": "```python\n\"\"\"URDF-grounded interpreter for the fixed-base Kinova Gen3.\"\"\"\n\nfrom eaisys.harness.interpreter import EmbodimentInterpreter\nfrom harnesses.common.urdf_interpreter_base import (\n    ChainConfig,\n    GenericURDFInterpreter,\n)\n\n\nclass Kinova3Interpreter(GenericURDFInterpreter):\n    \"\"\"Seven arm joints, one TCP, and a symmetric 85 mm gripper.\"\"\"\n\n    def __init__(self, urdf_path: str):\n        super().__init__(\n            urdf_path=urdf_path,\n            robot_id=\"kinova3_mujoco\",\n            chains=[\n                ChainConfig(\n                    name=\"main\",\n                    root_link=\"fixed_base_link\",\n                    tcp_link=\"kinova3_mujoco_tcp\",\n                    joint_names=(\n                        \"Actuator1\",\n                        \"Actuator2\",\n                        \"Actuator3\",\n                        \"Actuator4\",\n                        \"Actuator5\",\n                        \"Actuator6\",\n                        \"Actuator7\",\n                    ),\n                    # Sample within URDF limits and select by manipulability.\n                    home_q=None,\n                ),\n            ],\n            supports_mobile_base=False,\n            torso_joints=(),\n            # Both fingers travel 0.0425 m along opposing local Y axes.\n            max_gripper_width_m=2.0 * 0.0425,\n            # Automatic world bounds surround the selected home TCP:\n            # lower margins (0.22, 0.35, 0.18) m;\n            # upper margins (0.28, 0.35, 0.25) m.\n            workspace_bounds=None,\n        )\n\n\ndef build_interpreter(urdf_path: str) -> EmbodimentInterpreter:\n    return Kinova3Interpreter(urdf_path)\n```"
+        },
+        {
+          "attempt": 2,
+          "tokens_used": 34535,
+          "elapsed_s": 272.531,
+          "passed": true,
+          "failures": [],
+          "token_breakdown": {
+            "service_tier": "default",
+            "input_tokens": 27423,
+            "output_tokens": 7112,
+            "reasoning_output_tokens": 5694
+          },
+          "prompt": "You are a Frontier LLM synthesizing a concise, physically grounded semantic-action interpreter `g_E` (~90-150 lines) for a robot from its URDF.\n\n## Target Robot URDF XML\n```xml\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<robot name=\"kinova3_mujoco\">\n  <link name=\"fixed_base_link\" />\n  <link name=\"shoulder_link\" />\n  <joint name=\"Actuator1\" type=\"continuous\">\n    <origin xyz=\"0 0 0.15643\" rpy=\"-3.141585 -0 0\" />\n    <parent link=\"fixed_base_link\" />\n    <child link=\"shoulder_link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"HalfArm1_Link\" />\n  <joint name=\"Actuator2\" type=\"revolute\">\n    <origin xyz=\"0 0.005375 -0.12838\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"shoulder_link\" />\n    <child link=\"HalfArm1_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.410000\" upper=\"2.410000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"HalfArm2_Link\" />\n  <joint name=\"Actuator3\" type=\"continuous\">\n    <origin xyz=\"0 -0.21038 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"HalfArm1_Link\" />\n    <child link=\"HalfArm2_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"forearm_link\" />\n  <joint name=\"Actuator4\" type=\"revolute\">\n    <origin xyz=\"0 0.006375 -0.21038\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"HalfArm2_Link\" />\n    <child link=\"forearm_link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.660000\" upper=\"2.660000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"SphericalWrist1_Link\" />\n  <joint name=\"Actuator5\" type=\"continuous\">\n    <origin xyz=\"0 -0.20843 -0.006375\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"forearm_link\" />\n    <child link=\"SphericalWrist1_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"SphericalWrist2_Link\" />\n  <joint name=\"Actuator6\" type=\"revolute\">\n    <origin xyz=\"0 0.00017505 -0.10593\" rpy=\"1.570801 -0 0\" />\n    <parent link=\"SphericalWrist1_Link\" />\n    <child link=\"SphericalWrist2_Link\" />\n    <axis xyz=\"0 0 1\" />\n    <limit lower=\"-2.230000\" upper=\"2.230000\" effort=\"100\" velocity=\"2.5\" />\n  </joint>\n  <link name=\"Bracelet_Link\" />\n  <joint name=\"Actuator7\" type=\"continuous\">\n    <origin xyz=\"0 -0.10593 -0.00017505\" rpy=\"-1.570801 0 0\" />\n    <parent link=\"SphericalWrist2_Link\" />\n    <child link=\"Bracelet_Link\" />\n    <axis xyz=\"0 0 1\" />\n  </joint>\n  <link name=\"right_hand\" />\n  <joint name=\"fixed_Bracelet_Link_to_right_hand\" type=\"fixed\">\n    <origin xyz=\"0 0 -0.0615\" rpy=\"3.141593 -0 -1.570801\" />\n    <parent link=\"Bracelet_Link\" />\n    <child link=\"right_hand\" />\n  </joint>\n  <link name=\"robotiq_85_adapter_link\" />\n  <joint name=\"fixed_right_hand_to_robotiq_85_adapter_link\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"right_hand\" />\n    <child link=\"robotiq_85_adapter_link\" />\n  </joint>\n  <link name=\"eef\" />\n  <joint name=\"fixed_robotiq_85_adapter_link_to_eef\" type=\"fixed\">\n    <origin xyz=\"0 0 0.145\" rpy=\"0 0 -1.570796\" />\n    <parent link=\"robotiq_85_adapter_link\" />\n    <child link=\"eef\" />\n  </joint>\n  <link name=\"kinova3_mujoco_tcp\" />\n  <joint name=\"fixed_to_tcp\" type=\"fixed\">\n    <origin xyz=\"0 0 0\" rpy=\"0 -0 0\" />\n    <parent link=\"eef\" />\n    <child link=\"kinova3_mujoco_tcp\" />\n  </joint>\n  <link name=\"left_finger_link\" />\n  <joint name=\"left_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"left_finger_link\" />\n    <axis xyz=\"0 1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n  </joint>\n  <link name=\"right_finger_link\" />\n  <joint name=\"right_finger_joint\" type=\"prismatic\">\n    <origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n    <parent link=\"kinova3_mujoco_tcp\" />\n    <child link=\"right_finger_link\" />\n    <axis xyz=\"0 -1 0\" />\n    <limit lower=\"0.0\" upper=\"0.0425\" effort=\"20\" velocity=\"0.2\" />\n    <mimic joint=\"left_finger_joint\" multiplier=\"1.0\" offset=\"0.0\" />\n  </joint>\n</robot>\n\n```\n\n## Optional Sidecar Metadata\n```yaml\nNone (raw URDF only — infer joints, TCP link, gripper width, and non-singular home_q directly from the URDF XML).\n```\n\n## Available Dataset Trajectory Statistics\nZERO demonstrations provided (strict Zero-Shot Unseen URDF onboarding).\n\n## Exact Substrate API Reference (Do NOT guess signatures — use these exact types & methods)\n\n```python\nfrom eaisys.types import Transform, axis_angle_to_matrix, rpy_to_matrix\nfrom eaisys.urdf import IKResult, KinematicChainSolver, KinematicTree, forward_kinematics_tree, parse_robot_file\nfrom eaisys.harness.action_space import MOBILE_BASE_UNITS, ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS\nfrom eaisys.harness.interpreter import EmbodimentInterpreter, InterpreterState, StepGroundResult\n\n# 1. Transform (frozen dataclass):\n#    fields: R: np.ndarray (3, 3), p: np.ndarray (3,)\n#    Transform.identity() -> Transform\n#    Transform.from_xyz_rpy(xyz=(0,0,0), rpy=(0,0,0)) -> Transform\n#    T1.compose(T2) -> Transform\n\n# 2. parse_robot_file(path: str | Path) -> KinematicTree\n#    tree.root_link: str\n#    tree.joints: dict[str, JointNode]\n#      joint.name: str, joint.joint_type: str (\"revolute\"|\"continuous\"|\"prismatic\"|\"fixed\")\n#      joint.parent: str, joint.child: str, joint.lower: float, joint.upper: float, joint.is_continuous: bool\n#    forward_kinematics_tree(tree: KinematicTree, joint_values: dict[str, float], base_transform: Transform | None = None) -> dict[str, Transform]\n\n# 3. KinematicChainSolver:\n#    solver = KinematicChainSolver(\n#        tree=tree,                              # KinematicTree\n#        root_link=root_link,                    # str (e.g., \"panda_link0\" or \"left_base_link\")\n#        tcp_link=tcp_link,                      # str (e.g., \"panda_hand_tcp\" or \"left_ee_tcp\")\n#        actuated_joint_names=joint_names_tuple, # tuple[str, ...]\n#        lower_limits=lower_np_array,            # np.ndarray shape (D,)\n#        upper_limits=upper_np_array,            # np.ndarray shape (D,)\n#        continuous_mask=cont_bool_np_array,     # np.ndarray shape (D,) dtype=bool\n#        home_q=home_q_np_array,                 # np.ndarray shape (D,)\n#    )\n#    solver.fk(q: np.ndarray, T_root: Transform | None = None) -> Transform\n#    solver.manipulability(q: np.ndarray, T_root: Transform | None = None) -> float\n#    solver.clamp_or_wrap(q: np.ndarray) -> np.ndarray\n#    ik_res: IKResult = solver.solve_ik(\n#        target_world=target_tf,   # Transform in world frame!\n#        q_seed=q_current,         # np.ndarray shape (D,)\n#        T_root=T_chain_root,      # Transform of `root_link` in world frame! (CRITICAL on bimanual/mobile robots)\n#        pos_tol_m=1.5e-3,\n#        rot_tol_rad=2.5e-2,\n#        rot_weight=1.0,           # On 6-DoF arms, fall back to rot_weight=0.15 if rot_weight=1.0 fails\n#        max_iters=120,\n#        num_restarts=8,\n#    )\n#    # IKResult fields: success: bool, q: np.ndarray, pos_err_m: float, rot_err_rad: float\n\n# 4. Action dictionaries:\n#    TRANSLATION_UNITS = {\"MV_FWD\": (1,0,0), \"MV_BACK\": (-1,0,0), \"MV_LEFT\": (0,1,0), \"MV_RIGHT\": (0,-1,0), \"MV_UP\": (0,0,1), \"MV_DOWN\": (0,0,-1)}\n#    ROTATION_UNITS = {\"ROT_ROLL_CW\": (1,0,0), \"ROT_ROLL_CCW\": (-1,0,0), \"ROT_PITCH_CW\": (0,1,0), \"ROT_PITCH_CCW\": (0,-1,0), \"ROT_YAW_CW\": (0,0,-1), \"ROT_YAW_CCW\": (0,0,1)}\n#    STEP_MODE_UNITS = {\"STEP_COARSE\": 0.04, \"STEP_FINE\": 0.02, \"STEP_ULTRA_FINE\": 0.01}\n#    MOBILE_BASE_UNITS = {\"BASE_FWD\": (0.15,0,0), \"BASE_BACK\": (-0.15,0,0), \"BASE_LEFT\": (0,0.15,0), \"BASE_RIGHT\": (0,-0.15,0), \"BASE_YAW_LEFT\": (0,0,0.2618), \"BASE_YAW_RIGHT\": (0,0,-0.2618)}\n\n# 5. EmbodimentInterpreter abstract methods & return types (MUST implement ALL FIVE!):\n#    class MyInterpreter(EmbodimentInterpreter):\n#        robot_id = \"...\"\n#        arm_names = (\"main\",)  # or (\"left\", \"right\")\n#        supports_mobile_base = False\n#        max_gripper_width_m = 0.08\n#        workspace_bounds = (np.array([...]), np.array([...]))\n#\n#        def arm_joint_names(self, arm: str = \"main\") -> tuple[str, ...]: ...\n#        def tcp_link_name(self, arm: str = \"main\") -> str: ...\n#        def reset(self) -> InterpreterState: ...\n#        def fk_tcp(self, state: InterpreterState, arm: str = \"main\") -> Transform: ...\n#        def apply_unit(self, unit: str, state: InterpreterState, arm: str = \"main\") -> tuple[InterpreterState, StepGroundResult]:\n#            # MUST return a 2-tuple `(state, StepGroundResult(...))`!\n#\n#    InterpreterState(arm_q: dict[str, np.ndarray], tcp_setpoint: dict[str, Transform], gripper_open: dict[str, float],\n#                     step_m: float = 0.02, rot_step_rad: float = 0.261799, base_se2: np.ndarray = zeros(3), torso_q: np.ndarray = zeros(0))\n#    StepGroundResult(unit: str, arm: str, accepted: bool, clamped_by_workspace: bool = False,\n#                     ik_pos_err_m: float = 0.0, delta_tcp_world: np.ndarray = zeros(3), note: str = \"\")\n```\n\n\n## Available Cross-URDF Common Library (`harnesses.common.urdf_interpreter_base`)\nImport and instantiate/subclass from `harnesses.common.urdf_interpreter_base` — write a concise (~35-60 line) embodiment module specifying this URDF's exact chains, TCP link(s), gripper width, mobile/torso flags, and non-singular home posture:\n```python\n\"\"\"Reusable URDF grounding with world-frame arm actions and body-frame base actions.\"\"\"\n\nfrom dataclasses import dataclass\nfrom itertools import product\n\nimport numpy as np\n\nfrom eaisys.types import Transform, axis_angle_to_matrix\nfrom eaisys.urdf import (\n    KinematicChainSolver, forward_kinematics_tree, parse_robot_file,\n)\nfrom eaisys.harness.action_space import (\n    MOBILE_BASE_UNITS, ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS,\n)\nfrom eaisys.harness.interpreter import (\n    EmbodimentInterpreter, InterpreterState, StepGroundResult,\n)\n\n\n@dataclass(frozen=True)\nclass ChainConfig:\n    name: str\n    root_link: str\n    tcp_link: str\n    joint_names: tuple[str, ...]\n    home_q: list[float] | None = None\n\n\nclass GenericURDFInterpreter(EmbodimentInterpreter):\n    \"\"\"Automatic boxes follow mobile bases; explicit boxes remain world-fixed.\n\n    Workspace boxes bound targets; IK still determines kinematic feasibility.\n    \"\"\"\n\n    def __init__(\n        self, urdf_path: str, robot_id: str, chains: list[ChainConfig],\n        supports_mobile_base=False, torso_joints=(),\n        max_gripper_width_m=0.08, workspace_bounds=None,\n    ):\n        self.tree = parse_robot_file(urdf_path)\n        self.robot_id = robot_id\n        self.arm_names = tuple(c.name for c in chains)\n        if not chains or len(set(self.arm_names)) != len(chains):\n            raise ValueError(\"Provide at least one chain, with unique chain names.\")\n        self._chains = {c.name: c for c in chains}\n        self.supports_mobile_base = bool(supports_mobile_base)\n        self.torso_joints = tuple(torso_joints)\n        self.max_gripper_width_m = float(max_gripper_width_m)\n        torso_nodes = [self.tree.joints[n] for n in self.torso_joints]\n        self._torso_home = np.array([\n            0.0 if j.is_continuous else float(np.clip(0.0, j.lower, j.upper))\n            for j in torso_nodes\n        ], dtype=float)\n        self._homes, self.solvers = {}, {}\n        self._workspace_corners = None\n        rng = np.random.default_rng(0)\n\n        for chain in chains:\n            names = tuple(chain.joint_names)\n            nodes = [self.tree.joints[n] for n in names]\n            lower = np.array([j.lower for j in nodes], dtype=float)\n            upper = np.array([j.upper for j in nodes], dtype=float)\n            continuous = np.array([j.is_continuous for j in nodes], dtype=bool)\n            automatic = chain.home_q is None\n            if automatic:\n                a = np.where(continuous, -2.0, np.maximum(lower, -2.0))\n                b = np.where(continuous, 2.0, np.minimum(upper, 2.0))\n                if np.any(a >= b) or not np.all(np.isfinite([a, b])):\n                    raise ValueError(f\"{chain.name}: empty home-sampling interval.\")\n                home = (a + b) / 2.0\n            else:\n                home = np.asarray(chain.home_q, dtype=float)\n            if home.shape != (len(names),) or not np.all(np.isfinite(home)):\n                raise ValueError(f\"{chain.name}: invalid home configuration.\")\n            if np.any(((home <= lower) | (home >= upper)) & ~continuous):\n                raise ValueError(f\"{chain.name}: home must be strictly inside limits.\")\n            options = dict(\n                tree=self.tree, root_link=chain.root_link, tcp_link=chain.tcp_link,\n                actuated_joint_names=names, lower_limits=lower, upper_limits=upper,\n                continuous_mask=continuous,\n            )\n            solver = KinematicChainSolver(**options, home_q=home.copy())\n            if automatic:\n                best, best_score = None, 1e-6\n                margin = (b - a) * 1e-6\n                for q in rng.uniform(a + margin, b - margin, size=(120, len(names))):\n                    # Without T_root, FK and the forward-ready test are root-local.\n                    p = solver.fk(q).p\n                    if not np.all(np.isfinite(p)) or p[0] <= 0.28 or p[2] <= 0.14:\n                        continue\n                    quality = solver.manipulability(q)\n                    if np.isfinite(quality) and quality > best_score:\n                        best, best_score = q.copy(), float(quality)\n                if best is None:\n                    raise ValueError(\n                        f\"{chain.name}: no nonsingular forward-ready home sampled; \"\n                        \"provide an explicit home_q.\"\n                    )\n                home = best\n                # Give IK restarts the selected home through the documented API.\n                solver = KinematicChainSolver(**options, home_q=home.copy())\n            else:\n                quality = solver.manipulability(home)\n                if not np.isfinite(quality) or quality <= 1e-6:\n                    raise ValueError(f\"{chain.name}: home is poorly conditioned.\")\n            self._homes[chain.name] = home.copy()\n            self.solvers[chain.name] = solver\n\n        automatic_workspace = workspace_bounds is None\n        state = self.reset()\n        if automatic_workspace:\n            points = np.array([state.tcp_setpoint[a].p for a in self.arm_names])\n            workspace_bounds = (\n                points.min(axis=0) - np.array([0.22, 0.35, 0.18]),\n                points.max(axis=0) + np.array([0.28, 0.35, 0.25]),\n            )\n        lo, hi = (np.array(v, dtype=float, copy=True) for v in workspace_bounds)\n        if (lo.shape != (3,) or hi.shape != (3,)\n                or not np.all(np.isfinite([lo, hi])) or np.any(lo >= hi)):\n            raise ValueError(\"Workspace bounds must be finite, ordered 3-vectors.\")\n        self.workspace_bounds = (lo, hi)\n        if automatic_workspace and self.supports_mobile_base:\n            self._workspace_corners = np.array(list(product(*zip(lo, hi))))\n\n    def arm_joint_names(self, arm: str = \"main\") -> tuple[str, ...]:\n        if arm not in self._chains:\n            raise ValueError(f\"Unknown arm: {arm}\")\n        return tuple(self._chains[arm].joint_names)\n\n    def tcp_link_name(self, arm: str = \"main\") -> str:\n        self.arm_joint_names(arm)\n        return self._chains[arm].tcp_link\n\n    @staticmethod\n    def _base_transform(state: InterpreterState) -> Transform:\n        x, y, yaw = state.base_se2\n        return Transform.from_xyz_rpy(xyz=(x, y, 0.0), rpy=(0.0, 0.0, yaw))\n\n    def _root(self, state: InterpreterState, arm: str) -> Transform:\n        # Virtual base joints default to zero: apply base motion exactly once.\n        return forward_kinematics_tree(\n            self.tree, dict(zip(self.torso_joints, map(float, state.torso_q))),\n            base_transform=self._base_transform(state),\n        )[self._chains[arm].root_link]\n\n    def _sync_workspace(self, state: InterpreterState):\n        if self._workspace_corners is not None:\n            T = self._base_transform(state)\n            points = self._workspace_corners @ T.R.T + T.p\n            self.workspace_bounds = (points.min(axis=0), points.max(axis=0))\n\n    def reset(self) -> InterpreterState:\n        state = InterpreterState(\n            arm_q={a: self._homes[a].copy() for a in self.arm_names},\n            tcp_setpoint={}, gripper_open={a: 1.0 for a in self.arm_names},\n            torso_q=self._torso_home.copy(), base_se2=np.zeros(3),\n            step_m=0.02, rot_step_rad=np.pi / 12,\n        )\n        state.tcp_setpoint = {a: self.fk_tcp(state, a) for a in self.arm_names}\n        self._sync_workspace(state)\n        return state\n\n    def fk_tcp(self, state: InterpreterState, arm: str = \"main\") -> Transform:\n        self.arm_joint_names(arm)\n        return self.solvers[arm].fk(state.arm_q[arm], T_root=self._root(state, arm))\n\n    def apply_unit(\n        self, unit: str, state: InterpreterState, arm: str = \"main\",\n    ) -> tuple[InterpreterState, StepGroundResult]:\n        if arm not in self._chains:\n            return state, StepGroundResult(\n                unit=unit, arm=arm, accepted=False, note=\"Unknown arm.\",\n            )\n        before = self.fk_tcp(state, arm)\n\n        def finish(ok=True, clamped=False, err=0.0, note=\"\"):\n            return state, StepGroundResult(\n                unit=unit, arm=arm, accepted=bool(ok),\n                clamped_by_workspace=bool(clamped), ik_pos_err_m=float(err),\n                delta_tcp_world=self.fk_tcp(state, arm).p - before.p, note=note,\n            )\n\n        if unit in STEP_MODE_UNITS:\n            state.step_m = float(STEP_MODE_UNITS[unit])\n            return finish()\n        if unit in (\"GRASP\", \"RELEASE\"):\n            state.gripper_open[arm] = float(unit == \"RELEASE\")\n            return finish()\n        if unit in (\"HOLD\", \"DONE\"):\n            return finish()\n        if unit in MOBILE_BASE_UNITS:\n            if not self.supports_mobile_base:\n                return finish(False, note=\"This robot has a fixed base.\")\n            dx, dy, dyaw = MOBILE_BASE_UNITS[unit]\n            yaw = state.base_se2[2]\n            c, s = np.cos(yaw), np.sin(yaw)\n            raw = state.base_se2 + np.array([c * dx - s * dy, s * dx + c * dy, dyaw])\n            candidate = raw.copy()\n            # Honor conventional virtual-base limits when present in the URDF.\n            for i, name in enumerate((\"base_x\", \"base_y\")):\n                joint = self.tree.joints.get(name)\n                if joint is not None and joint.joint_type == \"prismatic\":\n                    candidate[i] = np.clip(candidate[i], joint.lower, joint.upper)\n            limited = bool(np.any(candidate[:2] != raw[:2]))\n            candidate[2] = (candidate[2] + np.pi) % (2 * np.pi) - np.pi\n            state.base_se2 = candidate\n            for name in self.arm_names:\n                state.tcp_setpoint[name] = self.fk_tcp(state, name)\n            self._sync_workspace(state)\n            return finish(note=\"Base translation limited by URDF bounds.\" if limited else \"\")\n        if unit not in TRANSLATION_UNITS and unit not in ROTATION_UNITS:\n            return finish(False, note=f\"Unsupported action unit: {unit}\")\n\n        self._sync_workspace(state)\n        translation = unit in TRANSLATION_UNITS\n        clamped = False\n        if translation:\n            raw = before.p + state.step_m * np.array(TRANSLATION_UNITS[unit])\n            p = np.clip(raw, *self.workspace_bounds)\n            clamped = bool(np.any(raw != p))\n            target = Transform(R=before.R.copy(), p=p)\n        else:\n            R = axis_angle_to_matrix(\n                np.array(ROTATION_UNITS[unit], dtype=float), state.rot_step_rad,\n            ) @ before.R\n            target = Transform(R=R, p=before.p.copy())\n        solver = self.solvers[arm]\n        options = dict(\n            target_world=target, q_seed=state.arm_q[arm].copy(),\n            T_root=self._root(state, arm), pos_tol_m=1.5e-3, rot_tol_rad=2.5e-2,\n            max_iters=120, num_restarts=8,\n        )\n        result = solver.solve_ik(**options, rot_weight=1.0)\n        relaxed = translation and len(self.arm_joint_names(arm)) == 6 and not result.success\n        if relaxed:\n            result = solver.solve_ik(**options, rot_weight=0.15)\n        ok = result.pos_err_m <= 0.003 if relaxed else result.success\n        if not ok or not np.all(np.isfinite(result.q)) or not np.isfinite(result.pos_err_m):\n            return finish(False, clamped, result.pos_err_m, \"IK target not reached.\")\n        state.arm_q[arm] = result.q.copy()\n        state.tcp_setpoint[arm] = self.fk_tcp(state, arm)\n        return finish(\n            True, clamped, result.pos_err_m, \"Orientation relaxed.\" if relaxed else \"\",\n        )\n\n```\n\n## Required Contract for `build_interpreter(urdf_path: str) -> EmbodimentInterpreter`\n1. Set `robot_id`, `arm_names` (`(\"main\",)` for 1-arm, `(\"left\", \"right\")` for 2-arm), `supports_mobile_base` (`bool`), `max_gripper_width_m` (`float`), and `workspace_bounds = (ws_lo_np, ws_hi_np)` in world frame so `reset()` TCP has >= `0.10m` margin inside `workspace_bounds` on all 6 axes while +1.2m `MV_FWD` clamps (`clamped_by_workspace=True`) for non-mobile robots.\n2. In `reset()`, pick a **non-singular bent-elbow `home_q`** strictly inside URDF limits (if sidecar has `home_q`, verify its manipulability or sample a well-conditioned posture if raw URDF has no sidecar). Set `tcp_setpoint[arm] = self.fk_tcp(state, arm)` and `gripper_open[arm] = 1.0`.\n3. Compute chain root transform `T_root = forward_kinematics_tree(self.tree, torso_joint_dict, base_transform=T_base)[root_link]` and pass `T_root=T_root` into `solver.fk(q, T_root=T_root)` and `solver.solve_ik(..., T_root=T_root)` so `fk_tcp` matches ground-truth `forward_kinematics_tree` to `< 1e-6 m`!\n4. In `apply_unit(unit, state, arm)`:\n   - Handle `STEP_COARSE`/`STEP_FINE`/`STEP_ULTRA_FINE`, `GRASP` (`0.0`), `RELEASE` (`1.0`), `HOLD`/`DONE`.\n   - For `MV_*`: target position is `p_raw = state.tcp_setpoint[arm].p + state.step_m * np.array(TRANSLATION_UNITS[unit])`. If not `supports_mobile_base`, clip `p_clamped = np.clip(p_raw, ws_lo, ws_hi)` and set `clamped = not np.allclose(p_raw, p_clamped)`. Solve IK with `rot_weight=1.0`; on 6-DoF arms if `not ik_res.success`, retry with `rot_weight=0.15` and accept if `ik_res.pos_err_m <= 0.003`. Update `state.arm_q[arm] = ik_res.q` and `state.tcp_setpoint[arm] = self.fk_tcp(state, arm)`.\n   - For `ROT_*`: `R_new = axis_angle_to_matrix(np.array(ROTATION_UNITS[unit]), state.rot_step_rad) @ state.tcp_setpoint[arm].R`.\n   - For `BASE_*` (when `supports_mobile_base=True`): add `(dx, dy, dyaw)` in robot heading frame to `state.base_se2` and refresh `tcp_setpoint`.\n\n## Previous Attempt Failed Ground-Truth URDF Verification\nPrevious code:\n```python\n\"\"\"URDF-grounded interpreter for the fixed-base Kinova Gen3.\"\"\"\n\nfrom eaisys.harness.interpreter import EmbodimentInterpreter\nfrom harnesses.common.urdf_interpreter_base import (\n    ChainConfig,\n    GenericURDFInterpreter,\n)\n\n\nclass Kinova3Interpreter(GenericURDFInterpreter):\n    \"\"\"Seven arm joints, one TCP, and a symmetric 85 mm gripper.\"\"\"\n\n    def __init__(self, urdf_path: str):\n        super().__init__(\n            urdf_path=urdf_path,\n            robot_id=\"kinova3_mujoco\",\n            chains=[\n                ChainConfig(\n                    name=\"main\",\n                    root_link=\"fixed_base_link\",\n                    tcp_link=\"kinova3_mujoco_tcp\",\n                    joint_names=(\n                        \"Actuator1\",\n                        \"Actuator2\",\n                        \"Actuator3\",\n                        \"Actuator4\",\n                        \"Actuator5\",\n                        \"Actuator6\",\n                        \"Actuator7\",\n                    ),\n                    # Sample within URDF limits and select by manipulability.\n                    home_q=None,\n                ),\n            ],\n            supports_mobile_base=False,\n            torso_joints=(),\n            # Both fingers travel 0.0425 m along opposing local Y axes.\n            max_gripper_width_m=2.0 * 0.0425,\n            # Automatic world bounds surround the selected home TCP:\n            # lower margins (0.22, 0.35, 0.18) m;\n            # upper margins (0.28, 0.35, 0.25) m.\n            workspace_bounds=None,\n        )\n\n\ndef build_interpreter(urdf_path: str) -> EmbodimentInterpreter:\n    return Kinova3Interpreter(urdf_path)\n```\nVerification errors:\n- [main] Workspace bounds never clamped 1.2m runaway MV_FWD motion.\nFix every failure above.\n\nKeep the code clean and direct (do NOT use `inspect` reflection hacks). Output ONLY Python code in a ```python ... ``` block.\n",
+          "response_text": "```python\n\"\"\"URDF-grounded Kinova Gen3 interpreter with a reachable forward boundary.\"\"\"\n\nimport numpy as np\n\nfrom eaisys.types import Transform, axis_angle_to_matrix\nfrom eaisys.urdf import KinematicChainSolver\nfrom eaisys.harness.action_space import (\n    ROTATION_UNITS, STEP_MODE_UNITS, TRANSLATION_UNITS,\n)\nfrom eaisys.harness.interpreter import (\n    EmbodimentInterpreter, InterpreterState, StepGroundResult,\n)\nfrom harnesses.common.urdf_interpreter_base import (\n    ChainConfig, GenericURDFInterpreter,\n)\n\n\nclass Kinova3Interpreter(GenericURDFInterpreter):\n    JOINTS = tuple(f\"Actuator{i}\" for i in range(1, 8))\n\n    def __init__(self, urdf_path: str):\n        super().__init__(\n            urdf_path=urdf_path,\n            robot_id=\"kinova3_mujoco\",\n            chains=[ChainConfig(\n                name=\"main\",\n                root_link=\"fixed_base_link\",\n                tcp_link=\"kinova3_mujoco_tcp\",\n                joint_names=self.JOINTS,\n                home_q=None,\n            )],\n            supports_mobile_base=False,\n            torso_joints=(),\n            max_gripper_width_m=2.0 * 0.0425,\n            workspace_bounds=None,\n        )\n        nodes = [self.tree.joints[name] for name in self.JOINTS]\n        lower = np.array([j.lower for j in nodes], dtype=float)\n        upper = np.array([j.upper for j in nodes], dtype=float)\n        continuous = np.array([j.is_continuous for j in nodes], dtype=bool)\n        options = dict(\n            tree=self.tree,\n            root_link=\"fixed_base_link\",\n            tcp_link=\"kinova3_mujoco_tcp\",\n            actuated_joint_names=self.JOINTS,\n            lower_limits=lower,\n            upper_limits=upper,\n            continuous_mask=continuous,\n        )\n        root = self._root(self.reset(), \"main\")\n        rng = np.random.default_rng(7)\n        lo = np.where(continuous, -1.8, np.maximum(lower, -1.8))\n        hi = np.where(continuous, 1.8, np.minimum(upper, 1.8))\n        candidates = [\n            self._homes[\"main\"].copy(),\n            *rng.uniform(lo, hi, size=(96, len(self.JOINTS))),\n        ]\n\n        for home in candidates:\n            solver = self.solvers[\"main\"]\n            quality = solver.manipulability(home, T_root=root)\n            pose = solver.fk(home, T_root=root)\n            if (abs(home[3]) < 0.35 or not np.isfinite(quality)\n                    or quality <= 1e-6 or not np.all(np.isfinite(pose.p))\n                    or pose.p[0] <= 0.28 or pose.p[2] <= 0.14):\n                continue\n            self._homes[\"main\"] = home.copy()\n            self.solvers[\"main\"] = KinematicChainSolver(\n                **options, home_q=home.copy(),\n            )\n            # Keep the forward face close enough to reach before full extension.\n            # Every home-to-face margin exceeds 0.10 m.\n            self.workspace_bounds = (\n                pose.p - np.array([0.20, 0.25, 0.18]),\n                pose.p + np.array([0.11, 0.25, 0.22]),\n            )\n            # Certify actual accepted motion to the boundary for every step mode\n            # and for a single long command; an unreachable box is insufficient.\n            valid = True\n            for step in (*STEP_MODE_UNITS.values(), 1.2):\n                probe = self.reset()\n                probe.step_m = float(step)\n                reached = False\n                for _ in range(int(np.ceil(0.16 / step)) + 2):\n                    probe, report = self.apply_unit(\"MV_FWD\", probe)\n                    if not report.accepted:\n                        break\n                    if report.clamped_by_workspace:\n                        reached = True\n                        break\n                if not reached:\n                    valid = False\n                    break\n            if valid:\n                return\n        raise ValueError(\"No nonsingular home with a reachable forward boundary.\")\n\n    def apply_unit(\n        self, unit: str, state: InterpreterState, arm: str = \"main\",\n    ) -> tuple[InterpreterState, StepGroundResult]:\n        if (arm not in self.arm_names\n                or (unit not in TRANSLATION_UNITS and unit not in ROTATION_UNITS)):\n            return super().apply_unit(unit, state, arm)\n\n        before = self.fk_tcp(state, arm)\n        setpoint = state.tcp_setpoint[arm]\n        clamped = False\n        if unit in TRANSLATION_UNITS:\n            raw = setpoint.p + state.step_m * np.array(\n                TRANSLATION_UNITS[unit], dtype=float,\n            )\n            position = np.clip(raw, *self.workspace_bounds)\n            clamped = not np.allclose(raw, position)\n            target = Transform(R=setpoint.R.copy(), p=position)\n        else:\n            rotation = axis_angle_to_matrix(\n                np.array(ROTATION_UNITS[unit], dtype=float),\n                state.rot_step_rad,\n            )\n            target = Transform(\n                R=rotation @ setpoint.R, p=setpoint.p.copy(),\n            )\n\n        result = self.solvers[arm].solve_ik(\n            target_world=target,\n            q_seed=state.arm_q[arm].copy(),\n            T_root=self._root(state, arm),\n            pos_tol_m=1e-4,\n            rot_tol_rad=1e-3,\n            rot_weight=1.0,\n            max_iters=120,\n            num_restarts=8,\n        )\n        # This arm has seven DoF, so preserve the requested orientation.\n        accepted = bool(\n            result.success and np.all(np.isfinite(result.q))\n            and np.isfinite(result.pos_err_m)\n            and np.isfinite(result.rot_err_rad)\n        )\n        if accepted:\n            state.arm_q[arm] = result.q.copy()\n            state.tcp_setpoint[arm] = self.fk_tcp(state, arm)\n        return state, StepGroundResult(\n            unit=unit,\n            arm=arm,\n            accepted=accepted,\n            clamped_by_workspace=clamped,\n            ik_pos_err_m=float(result.pos_err_m),\n            delta_tcp_world=self.fk_tcp(state, arm).p - before.p,\n            note=\"\" if accepted else \"IK target not reached.\",\n        )\n\n\ndef build_interpreter(urdf_path: str) -> EmbodimentInterpreter:\n    return Kinova3Interpreter(urdf_path)\n```"
+        }
+      ]
+    }
+  },
+  "stage2_vlm_closed_loop_turns": [
+    {
+      "turn": 1,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_01.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 1 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_FINE` (`0.02 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.0158, 0.6501, -0.0, 1.8549, 0.0204, 0.612, -1.5833]`\n- URDF FK TCP in `base_link` frame (m): `[0.4496, -0.0214, 0.0547]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.276, -0.1999, -0.0274, -0.276, -0.1999]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `not_started`\n- Recent executed units: `[]`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is forward and to the robot’s left of the open gripper in both overhead views. Move horizontally toward it before descending.\",\"current_subtask\":\"Align the open gripper above the red cube\",\"action_chunk\":[\"STEP_COARSE\",\"MV_FWD\",\"MV_FWD\",\"MV_LEFT\"]}",
+      "thought": "The red cube is forward and to the robot’s left of the open gripper in both overhead views. Move horizontally toward it before descending.",
+      "current_subtask": "Align the open gripper above the red cube",
+      "action_chunk": [
+        "STEP_COARSE",
+        "MV_FWD",
+        "MV_FWD",
+        "MV_LEFT"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21772,
+        "output_tokens": 767,
+        "reasoning_output_tokens": 691
+      },
+      "tokens_used": 22539,
+      "elapsed_s": 34.251,
+      "unit_grounding_logs": [
+        {
+          "unit": "STEP_COARSE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4496,
+            -0.0214,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4496,
+            -0.0214,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.2758,
+            -0.2003,
+            -0.0274,
+            -0.2758,
+            -0.2003
+          ],
+          "joint_tracking_max_err_rad": 0.0
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.04,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4496,
+            -0.0214,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4887,
+            -0.0213,
+            0.0543
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.2752,
+            -0.2013,
+            -0.0274,
+            -0.2752,
+            -0.2013
+          ],
+          "joint_tracking_max_err_rad": 0.00233
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0409,
+            -0.0001,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4887,
+            -0.0213,
+            0.0543
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5282,
+            -0.0213,
+            0.0541
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2015,
+            -0.0274,
+            -0.275,
+            -0.2015
+          ],
+          "joint_tracking_max_err_rad": 0.00334
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0014,
+            0.0399,
+            0.0006
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5282,
+            -0.0213,
+            0.0541
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5297,
+            0.0185,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2015,
+            -0.0274,
+            -0.275,
+            -0.2015
+          ],
+          "joint_tracking_max_err_rad": 0.0009
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 2,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_02.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 2 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_COARSE` (`0.04 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.0941, 0.777, 0.007, 1.5596, 0.0124, 0.7807, -1.6476]`\n- URDF FK TCP in `base_link` frame (m): `[0.5297, 0.0185, 0.0547]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2015, -0.0274, -0.275, -0.2015]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the open gripper above the red cube`\n- Recent executed units: `['STEP_COARSE', 'MV_FWD', 'MV_FWD', 'MV_LEFT']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube appears forward and left of the finger gap in the wrist view, and the side view shows ample clearance. Make small horizontal corrections before descending.\",\"current_subtask\":\"Align the open gripper above the red cube\",\"action_chunk\":[\"STEP_FINE\",\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The red cube appears forward and left of the finger gap in the wrist view, and the side view shows ample clearance. Make small horizontal corrections before descending.",
+      "current_subtask": "Align the open gripper above the red cube",
+      "action_chunk": [
+        "STEP_FINE",
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21800,
+        "output_tokens": 1059,
+        "reasoning_output_tokens": 985
+      },
+      "tokens_used": 22859,
+      "elapsed_s": 46.598,
+      "unit_grounding_logs": [
+        {
+          "unit": "STEP_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5297,
+            0.0185,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5297,
+            0.0185,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2015,
+            -0.0274,
+            -0.275,
+            -0.2015
+          ],
+          "joint_tracking_max_err_rad": 3e-05
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0,
+            0.0201,
+            -0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5297,
+            0.0185,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5297,
+            0.0386,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00081
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.02,
+            0.0,
+            -0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5297,
+            0.0386,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5496,
+            0.0387,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00078
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 3,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_03.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 3 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_FINE` (`0.02 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1296, 0.8142, 0.0104, 1.4745, 0.0093, 0.8293, -1.6798]`\n- URDF FK TCP in `base_link` frame (m): `[0.5496, 0.0387, 0.0547]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the open gripper above the red cube`\n- Recent executed units: `['STEP_COARSE', 'MV_FWD', 'MV_FWD', 'MV_LEFT', 'STEP_FINE', 'MV_LEFT', 'MV_FWD']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube appears slightly left of the wrist finger gap and ahead of it. Small left and forward adjustments should improve alignment before descending.\",\"current_subtask\":\"Align the open gripper above the red cube\",\"action_chunk\":[\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The red cube appears slightly left of the wrist finger gap and ahead of it. Small left and forward adjustments should improve alignment before descending.",
+      "current_subtask": "Align the open gripper above the red cube",
+      "action_chunk": [
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21818,
+        "output_tokens": 994,
+        "reasoning_output_tokens": 927
+      },
+      "tokens_used": 22812,
+      "elapsed_s": 42.289,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0199,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5496,
+            0.0387,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5497,
+            0.0586,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00081
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.02,
+            0.0,
+            -0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5497,
+            0.0586,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5696,
+            0.0587,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00078
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 4,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_04.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 4 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_FINE` (`0.02 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1616, 0.8546, 0.0133, 1.3823, 0.0066, 0.8815, -1.7083]`\n- URDF FK TCP in `base_link` frame (m): `[0.5696, 0.0587, 0.0547]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the open gripper above the red cube`\n- Recent executed units: `['STEP_COARSE', 'MV_FWD', 'MV_FWD', 'MV_LEFT', 'STEP_FINE', 'MV_LEFT', 'MV_FWD', 'MV_LEFT', 'MV_FWD']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is nearly centered laterally. CAM 2 places it slightly toward the base from the fingertips, with a clear vertical gap; correct backward slightly and lower cautiously.\",\"current_subtask\":\"Align and lower the open gripper toward the red cube\",\"action_chunk\":[\"STEP_ULTRA_FINE\",\"MV_BACK\",\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The red cube is nearly centered laterally. CAM 2 places it slightly toward the base from the fingertips, with a clear vertical gap; correct backward slightly and lower cautiously.",
+      "current_subtask": "Align and lower the open gripper toward the red cube",
+      "action_chunk": [
+        "STEP_ULTRA_FINE",
+        "MV_BACK",
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21823,
+        "output_tokens": 1424,
+        "reasoning_output_tokens": 1340
+      },
+      "tokens_used": 23247,
+      "elapsed_s": 64.685,
+      "unit_grounding_logs": [
+        {
+          "unit": "STEP_ULTRA_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5696,
+            0.0587,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5696,
+            0.0587,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 2e-05
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.01,
+            -0.0001,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5696,
+            0.0587,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5596,
+            0.0585,
+            0.0547
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00077
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0001,
+            -0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5596,
+            0.0585,
+            0.0547
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5596,
+            0.0585,
+            0.0449
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5596,
+            0.0585,
+            0.0449
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5595,
+            0.0585,
+            0.0349
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 5,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_05.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 5 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1641, 0.8669, 0.0131, 1.4358, 0.0068, 0.8163, -1.7109]`\n- URDF FK TCP in `base_link` frame (m): `[0.5595, 0.0585, 0.0349]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align and lower the open gripper toward the red cube`\n- Recent executed units: `['MV_FWD', 'MV_FWD', 'MV_LEFT', 'STEP_FINE', 'MV_LEFT', 'MV_FWD', 'MV_LEFT', 'MV_FWD', 'STEP_ULTRA_FINE', 'MV_BACK', 'MV_DOWN', 'MV_DOWN']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is approximately centered between the open fingers in the top and wrist views. The side view still shows clearance beneath the fingertips; descend two 1 cm steps, then reassess alignment.\",\"current_subtask\":\"Lower the open gripper toward the red cube\",\"action_chunk\":[\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The red cube is approximately centered between the open fingers in the top and wrist views. The side view still shows clearance beneath the fingertips; descend two 1 cm steps, then reassess alignment.",
+      "current_subtask": "Lower the open gripper toward the red cube",
+      "action_chunk": [
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 23165,
+        "output_tokens": 1112,
+        "reasoning_output_tokens": 1034
+      },
+      "tokens_used": 24277,
+      "elapsed_s": 53.037,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5595,
+            0.0585,
+            0.0349
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5594,
+            0.0585,
+            0.0249
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5594,
+            0.0585,
+            0.0249
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5593,
+            0.0585,
+            0.0149
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 6,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_06.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 6 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1641, 0.8993, 0.013, 1.4445, 0.0068, 0.7751, -1.7114]`\n- URDF FK TCP in `base_link` frame (m): `[0.5593, 0.0585, 0.0149]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Lower the open gripper toward the red cube`\n- Recent executed units: `['MV_LEFT', 'STEP_FINE', 'MV_LEFT', 'MV_FWD', 'MV_LEFT', 'MV_FWD', 'STEP_ULTRA_FINE', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is nearly centered between the open jaws in CAM 1. CAM 2 still shows the fingertips above its top; descend slightly and reassess alignment before grasping.\",\"current_subtask\":\"Lower the open gripper toward the red cube\",\"action_chunk\":[\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The red cube is nearly centered between the open jaws in CAM 1. CAM 2 still shows the fingertips above its top; descend slightly and reassess alignment before grasping.",
+      "current_subtask": "Lower the open gripper toward the red cube",
+      "action_chunk": [
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21831,
+        "output_tokens": 1078,
+        "reasoning_output_tokens": 1003
+      },
+      "tokens_used": 22909,
+      "elapsed_s": 48.875,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5593,
+            0.0585,
+            0.0149
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5592,
+            0.0585,
+            0.0049
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5592,
+            0.0585,
+            0.0049
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5591,
+            0.0585,
+            -0.0051
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 7,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_07.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 7 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1641, 0.9331, 0.013, 1.4502, 0.0069, 0.7356, -1.7119]`\n- URDF FK TCP in `base_link` frame (m): `[0.5591, 0.0585, -0.0051]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Lower the open gripper toward the red cube`\n- Recent executed units: `['MV_LEFT', 'MV_FWD', 'MV_LEFT', 'MV_FWD', 'STEP_ULTRA_FINE', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is centered between the jaws laterally. CAM 2 shows a small offset toward the base and the fingertips still above the cube; correct backward slightly and descend cautiously.\",\"current_subtask\":\"Align and lower the open gripper around the red cube\",\"action_chunk\":[\"MV_BACK\",\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The red cube is centered between the jaws laterally. CAM 2 shows a small offset toward the base and the fingertips still above the cube; correct backward slightly and descend cautiously.",
+      "current_subtask": "Align and lower the open gripper around the red cube",
+      "action_chunk": [
+        "MV_BACK",
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21837,
+        "output_tokens": 1111,
+        "reasoning_output_tokens": 1031
+      },
+      "tokens_used": 22948,
+      "elapsed_s": 47.994,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.01,
+            0.0001,
+            -0.0002
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5591,
+            0.0585,
+            -0.0051
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5491,
+            0.0586,
+            -0.0053
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00077
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0001,
+            -0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5491,
+            0.0586,
+            -0.0053
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.549,
+            0.0585,
+            -0.0151
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.549,
+            0.0585,
+            -0.0151
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5489,
+            0.0585,
+            -0.0251
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 8,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_08.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 8 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1672, 0.9527, 0.013, 1.4944, 0.0069, 0.6719, -1.7155]`\n- URDF FK TCP in `base_link` frame (m): `[0.5489, 0.0585, -0.0251]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align and lower the open gripper around the red cube`\n- Recent executed units: `['MV_FWD', 'STEP_ULTRA_FINE', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_BACK', 'MV_DOWN', 'MV_DOWN']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is nearly centered between the open fingers in the front and wrist views. The side view shows the fingertips still above grasping height; lower slightly before closing.\",\"current_subtask\":\"Lower the open fingers around the red cube\",\"action_chunk\":[\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The red cube is nearly centered between the open fingers in the front and wrist views. The side view shows the fingertips still above grasping height; lower slightly before closing.",
+      "current_subtask": "Lower the open fingers around the red cube",
+      "action_chunk": [
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21832,
+        "output_tokens": 1289,
+        "reasoning_output_tokens": 1217
+      },
+      "tokens_used": 23121,
+      "elapsed_s": 57.487,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5489,
+            0.0585,
+            -0.0251
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5488,
+            0.0585,
+            -0.0351
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0,
+            -0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5488,
+            0.0585,
+            -0.0351
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5485,
+            0.0584,
+            -0.0452
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.065,
+        "audit_dz_m": -0.005
+      }
+    },
+    {
+      "turn": 9,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_09.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 9 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1672, 0.9896, 0.013, 1.4946, 0.0069, 0.6353, -1.716]`\n- URDF FK TCP in `base_link` frame (m): `[0.5485, 0.0584, -0.0452]`\n- Gripper actuator command: `OPEN` | raw gripper encoder `qpos`: `[-0.0274, -0.275, -0.2016, -0.0274, -0.275, -0.2016]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Lower the open fingers around the red cube`\n- Recent executed units: `['MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is between the jaws but slightly toward the base in CAM 2. Finger tips remain near its top; shift back slightly, lower, grasp, and lift to check pickup.\",\"current_subtask\":\"Align and grasp the red cube, then verify it lifts\",\"action_chunk\":[\"MV_BACK\",\"MV_DOWN\",\"MV_DOWN\",\"GRASP\",\"MV_UP\",\"MV_UP\"]}",
+      "thought": "The red cube is between the jaws but slightly toward the base in CAM 2. Finger tips remain near its top; shift back slightly, lower, grasp, and lift to check pickup.",
+      "current_subtask": "Align and grasp the red cube, then verify it lifts",
+      "action_chunk": [
+        "MV_BACK",
+        "MV_DOWN",
+        "MV_DOWN",
+        "GRASP",
+        "MV_UP",
+        "MV_UP"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21829,
+        "output_tokens": 1262,
+        "reasoning_output_tokens": 1171
+      },
+      "tokens_used": 23091,
+      "elapsed_s": 55.45,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0097,
+            0.0,
+            -0.0001
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5485,
+            0.0584,
+            -0.0452
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5387,
+            0.0586,
+            -0.0453
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00077
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0001,
+            -0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5387,
+            0.0586,
+            -0.0453
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5383,
+            0.0585,
+            -0.0552
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            0.0003,
+            -0.0,
+            -0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5383,
+            0.0585,
+            -0.0552
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5382,
+            0.0584,
+            -0.0652
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2016,
+            -0.0274,
+            -0.275,
+            -0.2016
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "GRASP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5382,
+            0.0584,
+            -0.0652
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5399,
+            0.0601,
+            -0.063
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4301,
+            -0.4174,
+            0.2324,
+            0.434,
+            -0.414,
+            0.2357
+          ],
+          "joint_tracking_max_err_rad": 0.00368
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0001,
+            -0.0,
+            0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5399,
+            0.0601,
+            -0.063
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5398,
+            0.0602,
+            -0.0534
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4429,
+            -0.4351,
+            0.2626,
+            0.444,
+            -0.4376,
+            0.2642
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0,
+            -0.0,
+            0.0104
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5398,
+            0.0602,
+            -0.0534
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5398,
+            0.0602,
+            -0.0434
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4468,
+            -0.438,
+            0.2692,
+            0.4468,
+            -0.4381,
+            0.2692
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0633,
+        "audit_dz_m": 0.0127
+      }
+    },
+    {
+      "turn": 10,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_10.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 10 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.1709, 0.9722, 0.0116, 1.5346, 0.0056, 0.6084, -1.7197]`\n- URDF FK TCP in `base_link` frame (m): `[0.5398, 0.0602, -0.0434]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4468, -0.438, 0.2692, 0.4468, -0.4381, 0.2692]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align and grasp the red cube, then verify it lifts`\n- Recent executed units: `['MV_DOWN', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'GRASP', 'MV_UP', 'MV_UP']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube appears held between the fingers. The green cube is left in CAM 1 and toward the base in CAM 2. Raise for clearance, then begin moving toward it.\",\"current_subtask\":\"Lift the red cube clear and align above the green cube.\",\"action_chunk\":[\"MV_UP\",\"MV_UP\",\"MV_UP\",\"MV_UP\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The red cube appears held between the fingers. The green cube is left in CAM 1 and toward the base in CAM 2. Raise for clearance, then begin moving toward it.",
+      "current_subtask": "Lift the red cube clear and align above the green cube.",
+      "action_chunk": [
+        "MV_UP",
+        "MV_UP",
+        "MV_UP",
+        "MV_UP",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21874,
+        "output_tokens": 859,
+        "reasoning_output_tokens": 769
+      },
+      "tokens_used": 22733,
+      "elapsed_s": 36.518,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0,
+            -0.0,
+            0.0104
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5398,
+            0.0602,
+            -0.0434
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5398,
+            0.0602,
+            -0.0334
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4478,
+            -0.4356,
+            0.27,
+            0.448,
+            -0.4345,
+            0.2701
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.0,
+            0.0104
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5398,
+            0.0602,
+            -0.0334
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5398,
+            0.0602,
+            -0.0234
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4488,
+            -0.4332,
+            0.2707,
+            0.449,
+            -0.4311,
+            0.2708
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.0001,
+            0.0104
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5398,
+            0.0602,
+            -0.0234
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5394,
+            0.0601,
+            -0.0135
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4496,
+            -0.4309,
+            0.2714,
+            0.45,
+            -0.4281,
+            0.2715
+          ],
+          "joint_tracking_max_err_rad": 0.00075
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0003,
+            0.0,
+            0.0105
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5394,
+            0.0601,
+            -0.0135
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5394,
+            0.0601,
+            -0.0035
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4503,
+            -0.4292,
+            0.2719,
+            0.4507,
+            -0.4257,
+            0.2721
+          ],
+          "joint_tracking_max_err_rad": 0.00075
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            0.0003,
+            -0.01,
+            0.0005
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5394,
+            0.0601,
+            -0.0035
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5393,
+            0.0501,
+            -0.0034
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4506,
+            -0.4284,
+            0.2721,
+            0.4511,
+            -0.4245,
+            0.2723
+          ],
+          "joint_tracking_max_err_rad": 0.00079
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0096,
+            0.0,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5393,
+            0.0501,
+            -0.0034
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5293,
+            0.0501,
+            -0.0033
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4509,
+            -0.4277,
+            0.2723,
+            0.4513,
+            -0.424,
+            0.2725
+          ],
+          "joint_tracking_max_err_rad": 0.00076
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0485,
+        "audit_dz_m": 0.052
+      }
+    },
+    {
+      "turn": 11,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_11.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 11 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.154, 0.8808, 0.0096, 1.5776, 0.0078, 0.6579, -1.7042]`\n- URDF FK TCP in `base_link` frame (m): `[0.5293, 0.0501, -0.0033]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4509, -0.4277, 0.2723, 0.4513, -0.424, 0.2725]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Lift the red cube clear and align above the green cube.`\n- Recent executed units: `['MV_BACK', 'MV_DOWN', 'MV_DOWN', 'GRASP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_BACK']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is held, but sits right of the green cube in CAM 1 and left of it in CAM 2. Raise it for clearance, then shift right and back toward alignment.\",\"current_subtask\":\"Lift the red cube clear and align above the green cube.\",\"action_chunk\":[\"MV_UP\",\"MV_UP\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The red cube is held, but sits right of the green cube in CAM 1 and left of it in CAM 2. Raise it for clearance, then shift right and back toward alignment.",
+      "current_subtask": "Lift the red cube clear and align above the green cube.",
+      "action_chunk": [
+        "MV_UP",
+        "MV_UP",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21831,
+        "output_tokens": 684,
+        "reasoning_output_tokens": 595
+      },
+      "tokens_used": 22515,
+      "elapsed_s": 34.248,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0003,
+            0.0001,
+            0.0104
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5293,
+            0.0501,
+            -0.0033
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5293,
+            0.0502,
+            0.0065
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.451,
+            -0.4271,
+            0.2724,
+            0.4514,
+            -0.4239,
+            0.2726
+          ],
+          "joint_tracking_max_err_rad": 0.00075
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0004,
+            -0.0,
+            0.0105
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5293,
+            0.0502,
+            0.0065
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5293,
+            0.0501,
+            0.0165
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4511,
+            -0.4267,
+            0.2725,
+            0.4515,
+            -0.4239,
+            0.2726
+          ],
+          "joint_tracking_max_err_rad": 0.00075
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            0.0003,
+            -0.01,
+            0.0005
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5293,
+            0.0501,
+            0.0165
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5292,
+            0.0401,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4512,
+            -0.4263,
+            0.2725,
+            0.4515,
+            -0.424,
+            0.2726
+          ],
+          "joint_tracking_max_err_rad": 0.00079
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            0.0003,
+            -0.01,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5292,
+            0.0401,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5291,
+            0.0301,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4512,
+            -0.4261,
+            0.2726,
+            0.4515,
+            -0.4241,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00079
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0096,
+            0.0,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5291,
+            0.0301,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5192,
+            0.03,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4513,
+            -0.4259,
+            0.2726,
+            0.4515,
+            -0.4242,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00076
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0277,
+        "audit_dz_m": 0.0717
+      }
+    },
+    {
+      "turn": 12,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_12.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 12 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.116, 0.8261, 0.0059, 1.6186, 0.0113, 0.6711, -1.6709]`\n- URDF FK TCP in `base_link` frame (m): `[0.5192, 0.0300, 0.0167]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4513, -0.4259, 0.2726, 0.4515, -0.4242, 0.2727]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Lift the red cube clear and align above the green cube.`\n- Recent executed units: `['MV_UP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_BACK', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is held above the green cube, but appears slightly right in CAM 1 and left in CAM 2. Move robot-right and back to improve horizontal alignment before descending.\",\"current_subtask\":\"Align the held red cube directly above the green cube.\",\"action_chunk\":[\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The red cube is held above the green cube, but appears slightly right in CAM 1 and left in CAM 2. Move robot-right and back to improve horizontal alignment before descending.",
+      "current_subtask": "Align the held red cube directly above the green cube.",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 23161,
+        "output_tokens": 593,
+        "reasoning_output_tokens": 516
+      },
+      "tokens_used": 23754,
+      "elapsed_s": 30.889,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            0.0002,
+            -0.0099,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5192,
+            0.03,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.5191,
+            0.0201,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4513,
+            -0.4257,
+            0.2726,
+            0.4515,
+            -0.4243,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00079
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            -0.0097,
+            0.0,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.5191,
+            0.0201,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.509,
+            0.02,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4513,
+            -0.4256,
+            0.2726,
+            0.4515,
+            -0.4244,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00076
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0142,
+        "audit_dz_m": 0.0717
+      }
+    },
+    {
+      "turn": 13,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_13.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 13 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.0973, 0.8099, 0.004, 1.6596, 0.0132, 0.6461, -1.6551]`\n- URDF FK TCP in `base_link` frame (m): `[0.5090, 0.0200, 0.0167]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4513, -0.4256, 0.2726, 0.4515, -0.4244, 0.2727]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the held red cube directly above the green cube.`\n- Recent executed units: `['MV_UP', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_BACK', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_RIGHT', 'MV_BACK']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The held red cube appears slightly forward of the green cube in CAM 2. Move back one small step, then recheck alignment before descending.\",\"current_subtask\":\"Align the held red cube directly above the green cube.\",\"action_chunk\":[\"MV_BACK\"]}",
+      "thought": "The held red cube appears slightly forward of the green cube in CAM 2. Move back one small step, then recheck alignment before descending.",
+      "current_subtask": "Align the held red cube directly above the green cube.",
+      "action_chunk": [
+        "MV_BACK"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21833,
+        "output_tokens": 1226,
+        "reasoning_output_tokens": 1160
+      },
+      "tokens_used": 23059,
+      "elapsed_s": 52.39,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 9e-05,
+          "delta_tcp_world": [
+            -0.0097,
+            0.0001,
+            0.0004
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.509,
+            0.02,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4989,
+            0.0202,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4513,
+            -0.4255,
+            0.2726,
+            0.4515,
+            -0.4244,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00077
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0057,
+        "audit_dz_m": 0.0716
+      }
+    },
+    {
+      "turn": 14,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_14.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 14 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.0995, 0.795, 0.004, 1.6976, 0.0133, 0.623, -1.6572]`\n- URDF FK TCP in `base_link` frame (m): `[0.4989, 0.0202, 0.0167]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4513, -0.4255, 0.2726, 0.4515, -0.4244, 0.2727]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the held red cube directly above the green cube.`\n- Recent executed units: `['MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_BACK', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_RIGHT', 'MV_BACK', 'MV_BACK']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube is just above the green with little forward/back offset. Front and wrist views indicate a small lateral correction toward the robot’s right.\",\"current_subtask\":\"Align the held red cube directly above the green cube.\",\"action_chunk\":[\"MV_RIGHT\"]}",
+      "thought": "The red cube is just above the green with little forward/back offset. Front and wrist views indicate a small lateral correction toward the robot’s right.",
+      "current_subtask": "Align the held red cube directly above the green cube.",
+      "action_chunk": [
+        "MV_RIGHT"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21831,
+        "output_tokens": 858,
+        "reasoning_output_tokens": 792
+      },
+      "tokens_used": 22689,
+      "elapsed_s": 37.767,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0003,
+            -0.0101,
+            0.0003
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4989,
+            0.0202,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4989,
+            0.0101,
+            0.0167
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4514,
+            -0.4254,
+            0.2726,
+            0.4515,
+            -0.4245,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00079
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0067,
+        "audit_dz_m": 0.0716
+      }
+    },
+    {
+      "turn": 15,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_15.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 15 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.078, 0.7945, 0.0023, 1.699, 0.0151, 0.622, -1.6401]`\n- URDF FK TCP in `base_link` frame (m): `[0.4989, 0.0101, 0.0167]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4514, -0.4254, 0.2726, 0.4515, -0.4245, 0.2727]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Align the held red cube directly above the green cube.`\n- Recent executed units: `['MV_UP', 'MV_RIGHT', 'MV_BACK', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_RIGHT', 'MV_BACK', 'MV_BACK', 'MV_RIGHT']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The held red cube appears centered over the green cube in both external views, with a small vertical gap in CAM 2. Lower one ultra-fine step and reassess contact.\",\"current_subtask\":\"Seat the red cube on the green cube.\",\"action_chunk\":[\"MV_DOWN\",\"HOLD\"]}",
+      "thought": "The held red cube appears centered over the green cube in both external views, with a small vertical gap in CAM 2. Lower one ultra-fine step and reassess contact.",
+      "current_subtask": "Seat the red cube on the green cube.",
+      "action_chunk": [
+        "MV_DOWN",
+        "HOLD"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 21833,
+        "output_tokens": 534,
+        "reasoning_output_tokens": 460
+      },
+      "tokens_used": 22367,
+      "elapsed_s": 26.548,
+      "unit_grounding_logs": [
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0001,
+          "delta_tcp_world": [
+            0.0002,
+            0.0,
+            -0.0097
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4989,
+            0.0101,
+            0.0167
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4989,
+            0.0101,
+            0.0069
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4514,
+            -0.4253,
+            0.2726,
+            0.4515,
+            -0.4246,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00065
+        },
+        {
+          "unit": "HOLD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4989,
+            0.0101,
+            0.0069
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4987,
+            0.0101,
+            0.0067
+          ],
+          "gripper_command": "CLOSED",
+          "gripper_encoder_qpos": [
+            0.4514,
+            -0.4252,
+            0.2726,
+            0.4515,
+            -0.4246,
+            0.2727
+          ],
+          "joint_tracking_max_err_rad": 0.00034
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": false,
+        "audit_xy_err_m": 0.0067,
+        "audit_dz_m": 0.0615
+      }
+    },
+    {
+      "turn": 16,
+      "zero_privilege_verified": true,
+      "observation_image": "media/unseen_kinova3_stack/turn_16.jpg",
+      "prompt": "You are a Frontier VLM directly controlling unseen 3D robot `kinova3_mujoco` (`Kinova3`) in **STRICT ZERO-PRIVILEGE MODE**.\nYou have ZERO privileged scene state (no object coordinates, no table height, no object sizes, no grasp oracle). Infer all spatial relationships visually from the 3 raw RGB camera views alongside raw robot hardware encoders.\n\n## Natural Language Task Instruction\nPick up the small red cube from the table and stack it stably on top of the green cube, then lift the gripper clear and emit DONE.\n\n## Turn 16 / 26 — Semantic Action Units\nMovement units step the gripper TCP in the robot's `base_link` frame:\n- Translation: `MV_FWD` (`+X`, away from robot base), `MV_BACK` (`-X`, toward robot base), `MV_LEFT` (`+Y`, robot's left), `MV_RIGHT` (`-Y`, robot's right), `MV_UP` (`+Z`, upward), `MV_DOWN` (`-Z`, downward)\n- Step gears: `STEP_COARSE` (`0.04 m`), `STEP_FINE` (`0.02 m`), `STEP_ULTRA_FINE` (`0.01 m`)\n- Rotation: `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (`0.262 rad`)\n- Gripper & control: `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD`, `DONE`\nAllowed units: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes in Each View)\n1. **CAM 1 (Left — Front-Top view looking toward robot base)**:\n   - Lower in frame = `+X` (`MV_FWD`), higher in frame = `-X` (`MV_BACK`), right in frame = `+Y` (`MV_LEFT`), left in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Middle — Left-Side Elevation view)**:\n   - Left in frame = `+X` (`MV_FWD`), right in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Use CAM 2 to visually judge vertical gap between the gripper fingers, objects, and tabletop.\n3. **CAM 3 (Right — Wrist Eye-in-Hand camera looking down toward the two black gripper fingers)**:\n   - Note that the wrist camera is mounted slightly forward on the wrist, so the two black gripper fingers appear in the lower portion of CAM 3: above the fingers = `+X` (`MV_FWD`), below the fingers = `-X` (`MV_BACK`), left of finger gap = `+Y` (`MV_LEFT`), right of finger gap = `-Y` (`MV_RIGHT`).\n\n## Robot Hardware Encoders & URDF Forward Kinematics (`base_link` Frame Only)\n- Active step gear: `STEP_ULTRA_FINE` (`0.01 m` per `MV_*` unit)\n- Arm joint encoders `q` (rad): `[-0.0779, 0.8135, 0.0022, 1.7024, 0.0155, 0.5996, -1.64]`\n- URDF FK TCP in `base_link` frame (m): `[0.4987, 0.0101, 0.0067]`\n- Gripper actuator command: `CLOSED` | raw gripper encoder `qpos`: `[0.4514, -0.4252, 0.2726, 0.4515, -0.4246, 0.2727]`\n\n## Closed-Loop Visual Control Context\n- Previous subtask: `Seat the red cube on the green cube.`\n- Recent executed units: `['MV_BACK', 'MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_RIGHT', 'MV_BACK', 'MV_BACK', 'MV_RIGHT', 'MV_DOWN', 'HOLD']`\n- Cross-check horizontal alignment in CAM 1, CAM 2, and between the two visible black fingers in CAM 3 before descending; watch CAM 2 closely to judge vertical contact height when grasping and when seating one block onto another; after `GRASP` and `MV_UP`, visually verify in CAM 2 & CAM 3 that the block lifted with the fingers (if it stayed on the table, `RELEASE`, re-align visually, and retry); after `RELEASE` and lifting clear, visually confirm the stable stack in CAM 1 & CAM 2 before emitting `DONE`.\n\n## Cross-Embodiment Semantic Action Priors\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n- `robotwin_clean` (`aloha`): `MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_BACK -> ...`\n\nRespond strictly with JSON matching (`thought`, `current_subtask`, `action_chunk` of 1 to 6 units).\n",
+      "raw_response": "{\"thought\":\"The red cube appears centered over the green cube in both front and side views, with its bottom meeting the green top. Release and lift vertically, then verify stability.\",\"current_subtask\":\"Release the red cube and lift the gripper clear.\",\"action_chunk\":[\"RELEASE\",\"MV_UP\",\"MV_UP\",\"MV_UP\",\"HOLD\"]}",
+      "thought": "The red cube appears centered over the green cube in both front and side views, with its bottom meeting the green top. Release and lift vertically, then verify stability.",
+      "current_subtask": "Release the red cube and lift the gripper clear.",
+      "action_chunk": [
+        "RELEASE",
+        "MV_UP",
+        "MV_UP",
+        "MV_UP",
+        "HOLD"
+      ],
+      "token_usage": {
+        "service_tier": "default",
+        "input_tokens": 23158,
+        "output_tokens": 581,
+        "reasoning_output_tokens": 499
+      },
+      "tokens_used": 23739,
+      "elapsed_s": 27.562,
+      "unit_grounding_logs": [
+        {
+          "unit": "RELEASE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4987,
+            0.0101,
+            0.0067
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4987,
+            0.0101,
+            0.0067
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.2769,
+            -0.1986,
+            -0.0274,
+            -0.2769,
+            -0.1986
+          ],
+          "joint_tracking_max_err_rad": 0.00012
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            -0.0,
+            -0.0,
+            0.01
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4987,
+            0.0101,
+            0.0067
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4986,
+            0.01,
+            0.0165
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.2754,
+            -0.2008,
+            -0.0274,
+            -0.2754,
+            -0.2008
+          ],
+          "joint_tracking_max_err_rad": 0.0007
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0001,
+            0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4986,
+            0.01,
+            0.0165
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4986,
+            0.0099,
+            0.0265
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.2751,
+            -0.2014,
+            -0.0274,
+            -0.2751,
+            -0.2014
+          ],
+          "joint_tracking_max_err_rad": 0.00073
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0001,
+            0.0102
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4986,
+            0.0099,
+            0.0265
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4986,
+            0.0099,
+            0.0365
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2015,
+            -0.0274,
+            -0.275,
+            -0.2015
+          ],
+          "joint_tracking_max_err_rad": 0.00074
+        },
+        {
+          "unit": "HOLD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "",
+          "urdf_fk_tcp_before_base": [
+            0.4986,
+            0.0099,
+            0.0365
+          ],
+          "urdf_fk_tcp_after_base": [
+            0.4986,
+            0.0099,
+            0.0365
+          ],
+          "gripper_command": "OPEN",
+          "gripper_encoder_qpos": [
+            -0.0274,
+            -0.275,
+            -0.2015,
+            -0.0274,
+            -0.275,
+            -0.2015
+          ],
+          "joint_tracking_max_err_rad": 0.0
+        }
+      ],
+      "post_turn_audit_only": {
+        "mujoco_task_success": true,
+        "audit_xy_err_m": 0.0086,
+        "audit_dz_m": 0.0448
+      }
+    }
+  ]
+}

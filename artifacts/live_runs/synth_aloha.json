@@ -1,0 +1,76 @@
+{
+  "robot_id": "aloha",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/aloha.py",
+  "used_common_library": false,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 64887,
+  "total_elapsed_s": 441.873,
+  "verification": {
+    "robot_id": "aloha",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "left_reset_fk": {
+        "true_tcp_xyz": [
+          0.1836,
+          0.24,
+          0.8332
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "left_directional_errors_m": {
+        "MV_FWD": 0.0002,
+        "MV_BACK": 7e-05,
+        "MV_LEFT": 0.00037,
+        "MV_RIGHT": 0.00037,
+        "MV_UP": 0.00075,
+        "MV_DOWN": 0.00021
+      },
+      "left_workspace_firewall": {
+        "clamped_safely": true
+      },
+      "right_reset_fk": {
+        "true_tcp_xyz": [
+          0.1836,
+          -0.24,
+          0.8332
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "right_directional_errors_m": {
+        "MV_FWD": 0.0002,
+        "MV_BACK": 7e-05,
+        "MV_LEFT": 0.00037,
+        "MV_RIGHT": 0.00037,
+        "MV_UP": 0.00075,
+        "MV_DOWN": 0.00021
+      },
+      "right_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 33404,
+      "elapsed_s": 304.457,
+      "passed": false,
+      "failures": [
+        "[left] Workspace bounds never clamped 1.2m runaway MV_FWD motion.",
+        "[right] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 31483,
+      "elapsed_s": 137.416,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

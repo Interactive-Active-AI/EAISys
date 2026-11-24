@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mobile Single-Arm PandaOmron (RoboCasa365) -->
+<robot name="panda_omron">
+  <link name="odom"/>
+  <link name="base_x_link"/>
+  <link name="base_y_link"/>
+  <link name="omron_base"/>
+  <link name="torso_column"/>
+  <link name="panda_link0"/>
+  <link name="panda_link1"/>
+  <link name="panda_link2"/>
+  <link name="panda_link3"/>
+  <link name="panda_link4"/>
+  <link name="panda_link5"/>
+  <link name="panda_link6"/>
+  <link name="panda_link7"/>
+  <link name="panda_hand_tcp"/>
+  <link name="panda_leftfinger"/>
+
+  <joint name="base_x" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="odom"/>
+    <child link="base_x_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-10.0" upper="10.0" effort="300" velocity="0.8"/>
+  </joint>
+  <joint name="base_y" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_x_link"/>
+    <child link="base_y_link"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-10.0" upper="10.0" effort="300" velocity="0.8"/>
+  </joint>
+  <joint name="base_yaw" type="continuous">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_y_link"/>
+    <child link="omron_base"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <joint name="torso_lift_joint" type="prismatic">
+    <origin xyz="0.05 0 0.55" rpy="0 0 0"/>
+    <parent link="omron_base"/>
+    <child link="torso_column"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.15" upper="0.35" effort="400" velocity="0.25"/>
+  </joint>
+  <joint name="arm_mount" type="fixed">
+    <origin xyz="0.10 0 0.15" rpy="0 0 0"/>
+    <parent link="torso_column"/>
+    <child link="panda_link0"/>
+  </joint>
+  <joint name="panda_joint1" type="revolute">
+    <origin xyz="0 0 0.333" rpy="0 0 0"/>
+    <parent link="panda_link0"/>
+    <child link="panda_link1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.8973" upper="2.8973" effort="87" velocity="2.175"/>
+  </joint>
+  <joint name="panda_joint2" type="revolute">
+    <origin xyz="0 0 0" rpy="-1.5707963267948966 0 0"/>
+    <parent link="panda_link1"/>
+    <child link="panda_link2"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.7628" upper="1.7628" effort="87" velocity="2.175"/>
+  </joint>
+  <joint name="panda_joint3" type="revolute">
+    <origin xyz="0 -0.316 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="panda_link2"/>
+    <child link="panda_link3"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.8973" upper="2.8973" effort="87" velocity="2.175"/>
+  </joint>
+  <joint name="panda_joint4" type="revolute">
+    <origin xyz="0.0825 0 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="panda_link3"/>
+    <child link="panda_link4"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0718" upper="-0.0698" effort="87" velocity="2.175"/>
+  </joint>
+  <joint name="panda_joint5" type="revolute">
+    <origin xyz="-0.0825 0.384 0" rpy="-1.5707963267948966 0 0"/>
+    <parent link="panda_link4"/>
+    <child link="panda_link5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.8973" upper="2.8973" effort="12" velocity="2.61"/>
+  </joint>
+  <joint name="panda_joint6" type="revolute">
+    <origin xyz="0 0 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="panda_link5"/>
+    <child link="panda_link6"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.0175" upper="3.7525" effort="12" velocity="2.61"/>
+  </joint>
+  <joint name="panda_joint7" type="revolute">
+    <origin xyz="0.088 0 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="panda_link6"/>
+    <child link="panda_link7"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.8973" upper="2.8973" effort="12" velocity="2.61"/>
+  </joint>
+  <joint name="panda_tcp_fixed" type="fixed">
+    <origin xyz="0 0 0.2104" rpy="0 0 -0.7853981633974483"/>
+    <parent link="panda_link7"/>
+    <child link="panda_hand_tcp"/>
+  </joint>
+  <joint name="panda_finger_joint1" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="panda_hand_tcp"/>
+    <child link="panda_leftfinger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.04" effort="20" velocity="0.2"/>
+  </joint>
+</robot>

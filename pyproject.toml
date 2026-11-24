@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling>=1.21.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eaisys"
+version = "0.3.0"
+description = "One brain for any robot body: zero-shot manipulation from raw URDFs, or few-shot active self-probing when no URDF exists."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [
+  { name = "EAISys Contributors" },
+]
+keywords = ["robotics", "urdf", "embodied-ai", "vlm", "robot-use-agent", "mujoco", "robosuite"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy>=1.24.0",
+  "pyyaml>=6.0",
+  "pillow>=10.0.0",
+]
+
+[project.urls]
+Homepage = "https://interactive-active-ai.github.io/EAISys/"
+Repository = "https://github.com/Interactive-Active-AI/EAISys"
+Documentation = "https://github.com/Interactive-Active-AI/EAISys/tree/main/docs"
+Issues = "https://github.com/Interactive-Active-AI/EAISys/issues"
+
+[project.optional-dependencies]
+datasets = [
+  "h5py>=3.8.0",
+  "pyarrow>=14.0.0",
+]
+llm = [
+  "openai>=1.40.0",
+  "anthropic>=0.34.0",
+]
+sim = [
+  "mujoco==3.2.7",
+  "robosuite==1.5.1",
+  "imageio[ffmpeg]>=2.34.0",
+]
+gym = [
+  "gymnasium>=0.29.0",
+]
+dev = [
+  "pytest>=8.0.0",
+  "h5py>=3.8.0",
+  "pyarrow>=14.0.0",
+]
+
+[project.scripts]
+eaisys = "eaisys.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/eaisys"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"robots" = "eaisys/_bundled/robots"
+"harnesses" = "eaisys/_bundled/harnesses"
+"configs" = "eaisys/_bundled/configs"
+"website" = "eaisys/_bundled/website"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

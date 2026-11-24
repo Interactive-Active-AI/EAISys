@@ -1,0 +1,56 @@
+{
+  "robot_id": "kuka_iiwa",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/kuka_iiwa.py",
+  "used_common_library": true,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 62753,
+  "total_elapsed_s": 301.482,
+  "verification": {
+    "robot_id": "kuka_iiwa",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "main_reset_fk": {
+        "true_tcp_xyz": [
+          0.6504,
+          0.3352,
+          0.4011
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "main_directional_errors_m": {
+        "MV_FWD": 0.00017,
+        "MV_BACK": 7e-05,
+        "MV_LEFT": 9e-05,
+        "MV_RIGHT": 8e-05,
+        "MV_UP": 8e-05,
+        "MV_DOWN": 8e-05
+      },
+      "main_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 28607,
+      "elapsed_s": 65.406,
+      "passed": false,
+      "failures": [
+        "[main] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 34146,
+      "elapsed_s": 236.076,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

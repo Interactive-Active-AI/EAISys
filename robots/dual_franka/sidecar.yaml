@@ -1,0 +1,25 @@
+robot_id: dual_franka
+control_hz: 30.0
+cameras:
+  - middle_zed
+  - left_camera
+  - right_camera
+chains:
+  left:
+    root_link: left_link0
+    tcp_link: left_hand_tcp
+    joints: [left_joint1, left_joint2, left_joint3, left_joint4, left_joint5, left_joint6, left_joint7]
+    home_q: [0.08, 0.03, 0.05, -1.75, 0.03, 1.57, -0.55]
+    end_effector:
+      kind: parallel_gripper
+      max_width: 0.08
+      finger_joints: [left_finger_joint]
+  right:
+    root_link: right_link0
+    tcp_link: right_hand_tcp
+    joints: [right_joint1, right_joint2, right_joint3, right_joint4, right_joint5, right_joint6, right_joint7]
+    home_q: [0.57, 0.18, -0.61, -1.58, -0.04, 1.48, 0.80]
+    end_effector:
+      kind: parallel_gripper
+      max_width: 0.08
+      finger_joints: [right_finger_joint]

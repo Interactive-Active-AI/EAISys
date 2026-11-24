@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="sawyer_mujoco">
+  <link name="right_arm_base_link" />
+  <link name="right_l0" />
+  <joint name="right_j0" type="revolute">
+    <origin xyz="0 0 0.08" rpy="0 -0 0" />
+    <parent link="right_arm_base_link" />
+    <child link="right_l0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.050300" upper="3.050300" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l1" />
+  <joint name="right_j1" type="revolute">
+    <origin xyz="0.081 0.05 0.237" rpy="-1.570796 1.570796 0" />
+    <parent link="right_l0" />
+    <child link="right_l1" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.809500" upper="2.273600" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l2" />
+  <joint name="right_j2" type="revolute">
+    <origin xyz="0 -0.14 0.1425" rpy="1.570796 -0 0" />
+    <parent link="right_l1" />
+    <child link="right_l2" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.042600" upper="3.042600" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l3" />
+  <joint name="right_j3" type="revolute">
+    <origin xyz="0 -0.042 0.26" rpy="-1.570796 0 0" />
+    <parent link="right_l2" />
+    <child link="right_l3" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.043900" upper="3.043900" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l4" />
+  <joint name="right_j4" type="revolute">
+    <origin xyz="0 -0.125 -0.1265" rpy="1.570796 -0 0" />
+    <parent link="right_l3" />
+    <child link="right_l4" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.976100" upper="2.976100" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l5" />
+  <joint name="right_j5" type="revolute">
+    <origin xyz="0 0.031 0.275" rpy="-1.570796 0 0" />
+    <parent link="right_l4" />
+    <child link="right_l5" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.976100" upper="2.976100" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_l6" />
+  <joint name="right_j6" type="revolute">
+    <origin xyz="0 -0.11 0.1053" rpy="-1.570797 -0.1745301 -3.141585" />
+    <parent link="right_l5" />
+    <child link="right_l6" />
+    <axis xyz="0 0 1" />
+    <limit lower="-4.712400" upper="4.712400" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_hand" />
+  <joint name="fixed_right_l6_to_right_hand" type="fixed">
+    <origin xyz="0 0 0.024" rpy="0 -0 1.570801" />
+    <parent link="right_l6" />
+    <child link="right_hand" />
+  </joint>
+  <link name="gripper_base" />
+  <joint name="fixed_right_hand_to_gripper_base" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="right_hand" />
+    <child link="gripper_base" />
+  </joint>
+  <link name="eef" />
+  <joint name="fixed_gripper_base_to_eef" type="fixed">
+    <origin xyz="0 0 0.109" rpy="0 0 -1.570796" />
+    <parent link="gripper_base" />
+    <child link="eef" />
+  </joint>
+  <link name="sawyer_mujoco_tcp" />
+  <joint name="fixed_to_tcp" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="eef" />
+    <child link="sawyer_mujoco_tcp" />
+  </joint>
+  <link name="left_finger_link" />
+  <joint name="left_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="sawyer_mujoco_tcp" />
+    <child link="left_finger_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="0.0" upper="0.032333" effort="20" velocity="0.2" />
+  </joint>
+  <link name="right_finger_link" />
+  <joint name="right_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="sawyer_mujoco_tcp" />
+    <child link="right_finger_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0.0" upper="0.032333" effort="20" velocity="0.2" />
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0" />
+  </joint>
+</robot>

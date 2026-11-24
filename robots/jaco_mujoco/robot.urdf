@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="jaco_mujoco">
+  <link name="j2s7s300_link_0" />
+  <link name="j2s7s300_link_1" />
+  <joint name="j2s7s300_joint_1" type="revolute">
+    <origin xyz="0 0 0.15675" rpy="3.141593 -0 3.141593" />
+    <parent link="j2s7s300_link_0" />
+    <child link="j2s7s300_link_1" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283190" upper="6.283190" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_2" />
+  <joint name="j2s7s300_joint_2" type="revolute">
+    <origin xyz="0 0.0016 -0.11875" rpy="-1.570796 -0 3.141593" />
+    <parent link="j2s7s300_link_1" />
+    <child link="j2s7s300_link_2" />
+    <axis xyz="0 0 1" />
+    <limit lower="0.820305" upper="5.462880" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_3" />
+  <joint name="j2s7s300_joint_3" type="revolute">
+    <origin xyz="0 -0.205 0" rpy="-1.570796 0 0" />
+    <parent link="j2s7s300_link_2" />
+    <child link="j2s7s300_link_3" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283190" upper="6.283190" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_4" />
+  <joint name="j2s7s300_joint_4" type="revolute">
+    <origin xyz="0 0 -0.205" rpy="1.570796 -0 3.141593" />
+    <parent link="j2s7s300_link_3" />
+    <child link="j2s7s300_link_4" />
+    <axis xyz="0 0 1" />
+    <limit lower="0.523599" upper="5.759590" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_5" />
+  <joint name="j2s7s300_joint_5" type="revolute">
+    <origin xyz="0 0.2073 -0.0114" rpy="-1.570796 -0 3.141593" />
+    <parent link="j2s7s300_link_4" />
+    <child link="j2s7s300_link_5" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283190" upper="6.283190" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_6" />
+  <joint name="j2s7s300_joint_6" type="revolute">
+    <origin xyz="0 0 -0.10375" rpy="1.570796 -0 3.141593" />
+    <parent link="j2s7s300_link_5" />
+    <child link="j2s7s300_link_6" />
+    <axis xyz="0 0 1" />
+    <limit lower="1.134460" upper="5.148720" effort="100" velocity="2.5" />
+  </joint>
+  <link name="j2s7s300_link_7" />
+  <joint name="j2s7s300_joint_7" type="revolute">
+    <origin xyz="0 0.10375 0" rpy="-1.570796 -0 3.141593" />
+    <parent link="j2s7s300_link_6" />
+    <child link="j2s7s300_link_7" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.283190" upper="6.283190" effort="100" velocity="2.5" />
+  </joint>
+  <link name="right_hand" />
+  <joint name="fixed_j2s7s300_link_7_to_right_hand" type="fixed">
+    <origin xyz="0 0 0" rpy="3.141593 -0 0" />
+    <parent link="j2s7s300_link_7" />
+    <child link="right_hand" />
+  </joint>
+  <link name="right_gripper" />
+  <joint name="fixed_right_hand_to_right_gripper" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="right_hand" />
+    <child link="right_gripper" />
+  </joint>
+  <link name="palm" />
+  <joint name="fixed_right_gripper_to_palm" type="fixed">
+    <origin xyz="0 0 0" rpy="3.141593 0 0" />
+    <parent link="right_gripper" />
+    <child link="palm" />
+  </joint>
+  <link name="eef" />
+  <joint name="fixed_palm_to_eef" type="fixed">
+    <origin xyz="0 0 -0.1775" rpy="3.141593 -0 1.570801" />
+    <parent link="palm" />
+    <child link="eef" />
+  </joint>
+  <link name="jaco_mujoco_tcp" />
+  <joint name="fixed_to_tcp" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="eef" />
+    <child link="jaco_mujoco_tcp" />
+  </joint>
+  <link name="left_finger_link" />
+  <joint name="left_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="jaco_mujoco_tcp" />
+    <child link="left_finger_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2" />
+  </joint>
+  <link name="right_finger_link" />
+  <joint name="right_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="jaco_mujoco_tcp" />
+    <child link="right_finger_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2" />
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0" />
+  </joint>
+</robot>

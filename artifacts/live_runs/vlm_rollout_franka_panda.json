@@ -1,0 +1,1378 @@
+{
+  "robot_id": "franka_panda",
+  "zero_privilege": true,
+  "model": "gpt-6.1-sol",
+  "task_instruction": "Pick up the red_block from the table and place it onto the blue_plate, then emit DONE.",
+  "success": true,
+  "total_turns": 15,
+  "total_semantic_units": 74,
+  "total_tokens": 336428,
+  "total_elapsed_s": 668.877,
+  "completion_metrics": {
+    "xy_dist_to_goal_m": 0.0042,
+    "object_released": true,
+    "object_xyz": [
+      0.3161,
+      -0.0804,
+      0.4069
+    ],
+    "goal_xyz": [
+      0.3201,
+      -0.079,
+      0.3869
+    ]
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 1 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.02 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[0.0, -0.7854, 0.0, -2.3562, 0.0, 1.5708, 0.7854]` | URDF FK TCP in `base_link` frame (m): `[0.3069, -0.0000, 0.4869]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `not_started`\n\n## Recent Action History\n- Last executed units: `[]`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The red block is forward and left of the open jaws in the top view, and below them in the side view. Move toward it horizontally while maintaining clearance.\",\"current_subtask\":\"Align the gripper above the red block\",\"action_chunk\":[\"STEP_COARSE\",\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_FWD\",\"MV_FWD\"]}",
+      "thought": "The red block is forward and left of the open jaws in the top view, and below them in the side view. Move toward it horizontally while maintaining clearance.",
+      "subtask": "Align the gripper above the red block",
+      "action_chunk": [
+        "STEP_COARSE",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_FWD",
+        "MV_FWD"
+      ],
+      "step_results": [
+        {
+          "unit": "STEP_COARSE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3869,
+        0.12,
+        0.4869
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 21670,
+      "elapsed_s": 22.586
+    },
+    {
+      "turn": 2,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 2 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[0.0315, -0.4937, 0.2071, -2.1447, 0.098, 1.6596, 0.9912]` | URDF FK TCP in `base_link` frame (m): `[0.3869, 0.1200, 0.4869]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the gripper above the red block`\n\n## Recent Action History\n- Last executed units: `['STEP_COARSE', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD', 'MV_FWD']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The jaws are left of and slightly ahead of the block in CAM 1, and well above it in CAM 2. Shift right and back, then descend toward the block.\",\"current_subtask\":\"Align and lower the open gripper toward the red block\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\",\"MV_DOWN\",\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The jaws are left of and slightly ahead of the block in CAM 1, and well above it in CAM 2. Shift right and back, then descend toward the block.",
+      "subtask": "Align and lower the open gripper toward the red block",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK",
+        "MV_DOWN",
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            -0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            -0.04
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            -0.04
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            -0.04
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3469,
+        0.04,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 23106,
+      "elapsed_s": 30.136
+    },
+    {
+      "turn": 3,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 3 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0064, -0.6727, 0.0969, -2.4887, 0.0622, 1.8179, 0.8396]` | URDF FK TCP in `base_link` frame (m): `[0.3469, 0.0400, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align and lower the open gripper toward the red block`\n\n## Recent Action History\n- Last executed units: `['MV_FWD', 'MV_FWD', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws are right of and slightly behind the block in top view. Side view shows the fingers already overlapping the block’s height; align horizontally before grasping.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The open jaws are right of and slightly behind the block in top view. Side view shows the fingers already overlapping the block’s height; align horizontally before grasping.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3869,
+        0.16,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 23383,
+      "elapsed_s": 35.853
+    },
+    {
+      "turn": 4,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 4 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[0.0497, -0.4631, 0.2919, -2.3153, 0.1348, 1.8667, 1.0582]` | URDF FK TCP in `base_link` frame (m): `[0.3869, 0.1600, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_BACK', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws are left of the red block and slightly forward. Their height overlaps the block in the side view; correct horizontal alignment before grasping.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The open jaws are left of the red block and slightly forward. Their height overlaps the block in the side view; correct horizontal alignment before grasping.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            -0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3469,
+        -0.0,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22521,
+      "elapsed_s": 59.863
+    },
+    {
+      "turn": 5,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 5 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0634, -0.6779, 0.0505, -2.4944, 0.0327, 1.8169, 0.7534]` | URDF FK TCP in `base_link` frame (m): `[0.3469, -0.0000, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_LEFT', 'MV_LEFT', 'MV_FWD', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The red block is left and slightly forward of the open gripper in the top view; the side view confirms the forward offset. Move laterally and forward before grasping.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The red block is left and slightly forward of the open gripper in the top view; the side view confirms the forward offset. Move laterally and forward before grasping.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3869,
+        0.1999,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22137,
+      "elapsed_s": 49.77
+    },
+    {
+      "turn": 6,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 6 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[0.0393, -0.4212, 0.3779, -2.2686, 0.1585, 1.8705, 1.1251]` | URDF FK TCP in `base_link` frame (m): `[0.3869, 0.1999, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_RIGHT', 'MV_BACK', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws are left of the red block in the top view and slightly forward of it in both views. Move right and back to align.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The open jaws are left of the red block in the top view and slightly forward of it in both views. Move right and back to align.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            -0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3469,
+        0.0399,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22865,
+      "elapsed_s": 82.086
+    },
+    {
+      "turn": 7,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 7 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0527, -0.676, 0.1336, -2.4885, 0.0861, 1.816, 0.8163]` | URDF FK TCP in `base_link` frame (m): `[0.3469, 0.0399, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_LEFT', 'MV_LEFT', 'MV_FWD', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws are right of and slightly behind the red block. Move left and forward to center them over it.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The open jaws are right of and slightly behind the red block. Move left and forward to center them over it.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3869,
+        0.1599,
+        0.4068
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22083,
+      "elapsed_s": 42.931
+    },
+    {
+      "turn": 8,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 8 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0015, -0.4705, 0.3347, -2.3148, 0.1562, 1.8637, 1.0392]` | URDF FK TCP in `base_link` frame (m): `[0.3869, 0.1599, 0.4068]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open gripper is left of the red block in CAM 1 and slightly right of it in CAM 2. Move right and back to align while maintaining height.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The open gripper is left of the red block in CAM 1 and slightly right of it in CAM 2. Move right and back to align while maintaining height.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            -0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3469,
+        -0.0001,
+        0.4067
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22339,
+      "elapsed_s": 54.257
+    },
+    {
+      "turn": 9,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 9 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.1101, -0.6799, 0.0876, -2.4943, 0.0568, 1.8159, 0.7297]` | URDF FK TCP in `base_link` frame (m): `[0.3469, -0.0001, 0.4067]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_LEFT', 'MV_LEFT', 'MV_FWD', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open gripper is right of and slightly behind the red block. Move left and forward to center the jaws over it, keeping height unchanged.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_LEFT\",\"MV_FWD\"]}",
+      "thought": "The open gripper is right of and slightly behind the red block. Move left and forward to center the jaws over it, keeping height unchanged.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_LEFT",
+        "MV_FWD"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_FWD",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.04,
+            -0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3869,
+        0.1599,
+        0.4067
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22656,
+      "elapsed_s": 66.118
+    },
+    {
+      "turn": 10,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 10 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.027, -0.4746, 0.356, -2.3146, 0.1671, 1.8619, 1.0295]` | URDF FK TCP in `base_link` frame (m): `[0.3869, 0.1599, 0.4067]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_RIGHT', 'MV_RIGHT', 'MV_BACK', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws are left of the block in CAM 1 and slightly forward in CAM 2. Move right, then make a smaller backward correction before grasping.\",\"current_subtask\":\"Align the open gripper with the red block\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"STEP_FINE\",\"MV_BACK\"]}",
+      "thought": "The open jaws are left of the block in CAM 1 and slightly forward in CAM 2. Move right, then make a smaller backward correction before grasping.",
+      "subtask": "Align the open gripper with the red block",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "STEP_FINE",
+        "MV_BACK"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.00064,
+          "delta_tcp_world": [
+            -0.0198,
+            -0.0001,
+            -0.0006
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.367,
+        0.0797,
+        0.4061
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 22854,
+      "elapsed_s": 67.015
+    },
+    {
+      "turn": 11,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 11 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.02 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0677, -0.5983, 0.2305, -2.427, 0.1345, 1.8389, 0.8737]` | URDF FK TCP in `base_link` frame (m): `[0.3670, 0.0797, 0.4061]` | gripper cmd: `OPEN` | raw jaw encoder (m): `0.0800`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align the open gripper with the red block`\n\n## Recent Action History\n- Last executed units: `['MV_LEFT', 'MV_LEFT', 'MV_LEFT', 'MV_FWD', 'MV_RIGHT', 'MV_RIGHT', 'STEP_FINE', 'MV_BACK']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The open jaws bracket the red block in both views. Close them and lift to verify the block moves with the gripper.\",\"current_subtask\":\"Grasp and lift the red block\",\"action_chunk\":[\"GRASP\",\"STEP_COARSE\",\"MV_UP\",\"MV_UP\"]}",
+      "thought": "The open jaws bracket the red block in both views. Close them and lift to verify the block moves with the gripper.",
+      "subtask": "Grasp and lift the red block",
+      "action_chunk": [
+        "GRASP",
+        "STEP_COARSE",
+        "MV_UP",
+        "MV_UP"
+      ],
+      "step_results": [
+        {
+          "unit": "GRASP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_COARSE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.04
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.04
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.367,
+        0.0797,
+        0.4861
+      ],
+      "gripper_open": 0.0,
+      "holding": null,
+      "tokens_used": 21812,
+      "elapsed_s": 29.372
+    },
+    {
+      "turn": 12,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 12 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.0761, -0.5883, 0.2123, -2.2166, 0.1181, 1.6384, 0.8789]` | URDF FK TCP in `base_link` frame (m): `[0.3670, 0.0797, 0.4861]` | gripper cmd: `CLOSED` | raw jaw encoder (m): `0.0400`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Grasp and lift the red block`\n\n## Recent Action History\n- Last executed units: `['MV_RIGHT', 'MV_RIGHT', 'STEP_FINE', 'MV_BACK', 'GRASP', 'STEP_COARSE', 'MV_UP', 'MV_UP']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The red block is visibly lifted with the jaws. The plate is rightward and slightly downward in the top view, requiring rightward and backward translation while maintaining height.\",\"current_subtask\":\"Move the held block above the blue plate\",\"action_chunk\":[\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_RIGHT\",\"MV_BACK\"]}",
+      "thought": "The red block is visibly lifted with the jaws. The plate is rightward and slightly downward in the top view, requiring rightward and backward translation while maintaining height.",
+      "subtask": "Move the held block above the blue plate",
+      "action_chunk": [
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_RIGHT",
+        "MV_BACK"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            -0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            -0.04,
+            0.0,
+            -0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.327,
+        -0.1203,
+        0.4861
+      ],
+      "gripper_open": 0.0,
+      "holding": null,
+      "tokens_used": 21873,
+      "elapsed_s": 30.172
+    },
+    {
+      "turn": 13,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 13 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.2155, -0.6595, -0.0965, -2.2771, -0.0585, 1.6197, 0.4967]` | URDF FK TCP in `base_link` frame (m): `[0.3270, -0.1203, 0.4861]` | gripper cmd: `CLOSED` | raw jaw encoder (m): `0.0400`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Move the held block above the blue plate`\n\n## Recent Action History\n- Last executed units: `['MV_UP', 'MV_UP', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_RIGHT', 'MV_BACK']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The held block is right of the plate and slightly forward. Shift left and slightly back while maintaining clearance.\",\"current_subtask\":\"Center the held block above the blue plate\",\"action_chunk\":[\"MV_LEFT\",\"STEP_FINE\",\"MV_LEFT\",\"STEP_ULTRA_FINE\",\"MV_BACK\",\"STEP_COARSE\"]}",
+      "thought": "The held block is right of the plate and slightly forward. Shift left and slightly back while maintaining clearance.",
+      "subtask": "Center the held block above the blue plate",
+      "action_chunk": [
+        "MV_LEFT",
+        "STEP_FINE",
+        "MV_LEFT",
+        "STEP_ULTRA_FINE",
+        "MV_BACK",
+        "STEP_COARSE"
+      ],
+      "step_results": [
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.04,
+            -0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_LEFT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.00052,
+          "delta_tcp_world": [
+            -0.0005,
+            0.0199,
+            -0.0002
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_ULTRA_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_BACK",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.00016,
+          "delta_tcp_world": [
+            -0.01,
+            0.0,
+            -0.0001
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_COARSE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3166,
+        -0.0603,
+        0.4858
+      ],
+      "gripper_open": 0.0,
+      "holding": null,
+      "tokens_used": 22211,
+      "elapsed_s": 43.347
+    },
+    {
+      "turn": 14,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 14 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.1803, -0.7374, -0.0055, -2.3308, -0.0033, 1.5931, 0.6014]` | URDF FK TCP in `base_link` frame (m): `[0.3166, -0.0603, 0.4858]` | gripper cmd: `CLOSED` | raw jaw encoder (m): `0.0400`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Center the held block above the blue plate`\n\n## Recent Action History\n- Last executed units: `['MV_RIGHT', 'MV_BACK', 'MV_LEFT', 'STEP_FINE', 'MV_LEFT', 'STEP_ULTRA_FINE', 'MV_BACK', 'STEP_COARSE']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The held block is slightly left of the plate in the top view and well above it in the side view. Shift right, then lower toward the plate.\",\"current_subtask\":\"Align and lower the held block onto the blue plate\",\"action_chunk\":[\"STEP_FINE\",\"MV_RIGHT\",\"STEP_COARSE\",\"MV_DOWN\",\"MV_DOWN\",\"MV_DOWN\"]}",
+      "thought": "The held block is slightly left of the plate in the top view and well above it in the side view. Shift right, then lower toward the plate.",
+      "subtask": "Align and lower the held block onto the blue plate",
+      "action_chunk": [
+        "STEP_FINE",
+        "MV_RIGHT",
+        "STEP_COARSE",
+        "MV_DOWN",
+        "MV_DOWN",
+        "MV_DOWN"
+      ],
+      "step_results": [
+        {
+          "unit": "STEP_FINE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_RIGHT",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.00052,
+          "delta_tcp_world": [
+            -0.0005,
+            -0.0201,
+            -0.0002
+          ],
+          "note": ""
+        },
+        {
+          "unit": "STEP_COARSE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.0,
+            -0.04
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.0,
+            -0.04
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_DOWN",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.0,
+            -0.04
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3161,
+        -0.0804,
+        0.4056
+      ],
+      "gripper_open": 0.0,
+      "holding": null,
+      "tokens_used": 23214,
+      "elapsed_s": 32.873
+    },
+    {
+      "turn": 15,
+      "zero_privilege_verified": true,
+      "prompt": "You are a Frontier VLM directly operating robot `franka_panda` through EAISys Embodied Harness (**STRICT ZERO-PRIVILEGE MODE**).\nYou have ZERO privileged scene state (no object coordinates, no table height, no grid rulers, no holding oracle).\n\n## Task Instruction\nPick up the red_block from the table and place it onto the blue_plate, then emit DONE.\n\n## Interaction Turn\nTurn 15 / 16\n\n## Semantic Action Vocabulary\nDirections in robot `base_link` frame:\n- `MV_FWD` (+X), `MV_BACK` (-X), `MV_LEFT` (+Y), `MV_RIGHT` (-Y), `MV_UP` (+Z), `MV_DOWN` (-Z)\n- `STEP_COARSE` (0.04 m), `STEP_FINE` (0.02 m), `STEP_ULTRA_FINE` (0.01 m)\n- `ROT_ROLL_CW/CCW`, `ROT_PITCH_CW/CCW`, `ROT_YAW_CW/CCW` (0.262 rad)\n- `GRASP` (close jaws), `RELEASE` (open jaws), `HOLD` (no-op), `DONE` (declare task finished)\nAllowed tokens on `franka_panda`: MV_FWD, MV_BACK, MV_LEFT, MV_RIGHT, MV_UP, MV_DOWN, ROT_ROLL_CW, ROT_ROLL_CCW, ROT_PITCH_CW, ROT_PITCH_CCW, ROT_YAW_CW, ROT_YAW_CCW, GRASP, RELEASE, STEP_COARSE, STEP_FINE, STEP_ULTRA_FINE, HOLD, DONE\n\n## Multi-View Camera Orientation (Robot Base Axes Only)\n1. **CAM 1 (Left — Top-Down)**: up in frame = `+X` (`MV_FWD`), down in frame = `-X` (`MV_BACK`), left in frame = `+Y` (`MV_LEFT`), right in frame = `-Y` (`MV_RIGHT`).\n2. **CAM 2 (Right — Side)**: right in frame = `+X` (`MV_FWD`), left in frame = `-X` (`MV_BACK`), up in frame = `+Z` (`MV_UP`), down in frame = `-Z` (`MV_DOWN`). Visually check jaw alignment with the red block and blue circular plate across both panels.\n\n## Robot Hardware Encoders & URDF FK (`base_link` Frame Only)\n- Active step gear: `0.04 m` per `MV_*` unit\n- Arm `main` joint encoders `q` (rad): `[-0.1952, -0.7486, -0.042, -2.5423, -0.0293, 1.7935, 0.5664]` | URDF FK TCP in `base_link` frame (m): `[0.3161, -0.0804, 0.4056]` | gripper cmd: `CLOSED` | raw jaw encoder (m): `0.0400`\n\n## Adaptive Step & Visual Verification\n- Switch between `STEP_COARSE`, `STEP_FINE`, and `STEP_ULTRA_FINE` based on visual proximity in CAM 1 & CAM 2.\n- After `GRASP` and `MV_UP`, check CAM 2 visually to verify the red block lifted with the jaws (if it remained on the table, `RELEASE`, adjust visually, and retry).\n\n## Subtask Context\n- Previous subtask: `Align and lower the held block onto the blue plate`\n\n## Recent Action History\n- Last executed units: `['MV_BACK', 'STEP_COARSE', 'STEP_FINE', 'MV_RIGHT', 'STEP_COARSE', 'MV_DOWN', 'MV_DOWN', 'MV_DOWN']`\n\n## Cross-Embodiment Semantic Action Priors\n- Demo 1 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> MV_LEFT -> MV_LEFT -> MV_FWD -> MV_FWD -> MV_FWD -> MV_LEFT -> ...`\n- Demo 2 (`aloha_mobile_real` on `aloha`): task=\"mobile bimanual pick and place\" -> semantic trace `MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_UP -> MV_FWD -> MV_FWD -> MV_FWD -> MV_DOWN -> MV_DOWN -> MV_DOWN -> MV_FWD -> MV_DOWN -> MV_DOWN -> RELEASE -> ...`\n\nRespond strictly with a JSON object matching (`thought`, `current_subtask`, `action_chunk`).",
+      "raw_response": "{\"thought\":\"The red block is centered over the blue plate, with its base at the plate surface in the side view. Release it and lift the gripper clear.\",\"current_subtask\":\"Release the block onto the blue plate\",\"action_chunk\":[\"RELEASE\",\"MV_UP\"]}",
+      "thought": "The red block is centered over the blue plate, with its base at the plate surface in the side view. Release it and lift the gripper clear.",
+      "subtask": "Release the block onto the blue plate",
+      "action_chunk": [
+        "RELEASE",
+        "MV_UP"
+      ],
+      "step_results": [
+        {
+          "unit": "RELEASE",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 0.0,
+          "delta_tcp_world": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": ""
+        },
+        {
+          "unit": "MV_UP",
+          "arm": "main",
+          "accepted": true,
+          "clamped_by_workspace": false,
+          "ik_pos_err_m": 1e-05,
+          "delta_tcp_world": [
+            0.0,
+            -0.0,
+            0.04
+          ],
+          "note": ""
+        }
+      ],
+      "tcp_after_xyz": [
+        0.3161,
+        -0.0804,
+        0.4456
+      ],
+      "gripper_open": 1.0,
+      "holding": null,
+      "tokens_used": 21704,
+      "elapsed_s": 22.498
+    }
+  ]
+}

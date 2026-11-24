@@ -1,0 +1,76 @@
+{
+  "robot_id": "dual_franka",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/dual_franka.py",
+  "used_common_library": true,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 64309,
+  "total_elapsed_s": 213.059,
+  "verification": {
+    "robot_id": "dual_franka",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "left_reset_fk": {
+        "true_tcp_xyz": [
+          0.5217,
+          0.3744,
+          0.4233
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "left_directional_errors_m": {
+        "MV_FWD": 0.00023,
+        "MV_BACK": 0.00013,
+        "MV_LEFT": 0.0001,
+        "MV_RIGHT": 9e-05,
+        "MV_UP": 0.00016,
+        "MV_DOWN": 0.0001
+      },
+      "left_workspace_firewall": {
+        "clamped_safely": true
+      },
+      "right_reset_fk": {
+        "true_tcp_xyz": [
+          0.5538,
+          -0.3167,
+          0.4297
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "right_directional_errors_m": {
+        "MV_FWD": 0.00036,
+        "MV_BACK": 0.00025,
+        "MV_LEFT": 9e-05,
+        "MV_RIGHT": 0.0001,
+        "MV_UP": 0.00018,
+        "MV_DOWN": 0.0001
+      },
+      "right_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 30001,
+      "elapsed_s": 49.47,
+      "passed": false,
+      "failures": [
+        "[left] Workspace bounds never clamped 1.2m runaway MV_FWD motion.",
+        "[right] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 34308,
+      "elapsed_s": 163.589,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

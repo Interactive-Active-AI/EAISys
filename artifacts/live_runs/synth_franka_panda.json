@@ -1,0 +1,47 @@
+{
+  "robot_id": "franka_panda",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/franka_panda.py",
+  "used_common_library": false,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 1,
+  "total_tokens": 28334,
+  "total_elapsed_s": 90.518,
+  "verification": {
+    "robot_id": "franka_panda",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "main_reset_fk": {
+        "true_tcp_xyz": [
+          0.3069,
+          -0.0,
+          0.4869
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "main_directional_errors_m": {
+        "MV_FWD": 0.00016,
+        "MV_BACK": 0.00016,
+        "MV_LEFT": 0.00013,
+        "MV_RIGHT": 0.00013,
+        "MV_UP": 0.00013,
+        "MV_DOWN": 9e-05
+      },
+      "main_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 28334,
+      "elapsed_s": 90.518,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

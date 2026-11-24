@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="kinova3_mujoco">
+  <link name="fixed_base_link" />
+  <link name="shoulder_link" />
+  <joint name="Actuator1" type="continuous">
+    <origin xyz="0 0 0.15643" rpy="-3.141585 -0 0" />
+    <parent link="fixed_base_link" />
+    <child link="shoulder_link" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="HalfArm1_Link" />
+  <joint name="Actuator2" type="revolute">
+    <origin xyz="0 0.005375 -0.12838" rpy="1.570801 -0 0" />
+    <parent link="shoulder_link" />
+    <child link="HalfArm1_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.410000" upper="2.410000" effort="100" velocity="2.5" />
+  </joint>
+  <link name="HalfArm2_Link" />
+  <joint name="Actuator3" type="continuous">
+    <origin xyz="0 -0.21038 -0.006375" rpy="-1.570801 0 0" />
+    <parent link="HalfArm1_Link" />
+    <child link="HalfArm2_Link" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="forearm_link" />
+  <joint name="Actuator4" type="revolute">
+    <origin xyz="0 0.006375 -0.21038" rpy="1.570801 -0 0" />
+    <parent link="HalfArm2_Link" />
+    <child link="forearm_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.660000" upper="2.660000" effort="100" velocity="2.5" />
+  </joint>
+  <link name="SphericalWrist1_Link" />
+  <joint name="Actuator5" type="continuous">
+    <origin xyz="0 -0.20843 -0.006375" rpy="-1.570801 0 0" />
+    <parent link="forearm_link" />
+    <child link="SphericalWrist1_Link" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="SphericalWrist2_Link" />
+  <joint name="Actuator6" type="revolute">
+    <origin xyz="0 0.00017505 -0.10593" rpy="1.570801 -0 0" />
+    <parent link="SphericalWrist1_Link" />
+    <child link="SphericalWrist2_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.230000" upper="2.230000" effort="100" velocity="2.5" />
+  </joint>
+  <link name="Bracelet_Link" />
+  <joint name="Actuator7" type="continuous">
+    <origin xyz="0 -0.10593 -0.00017505" rpy="-1.570801 0 0" />
+    <parent link="SphericalWrist2_Link" />
+    <child link="Bracelet_Link" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="right_hand" />
+  <joint name="fixed_Bracelet_Link_to_right_hand" type="fixed">
+    <origin xyz="0 0 -0.0615" rpy="3.141593 -0 -1.570801" />
+    <parent link="Bracelet_Link" />
+    <child link="right_hand" />
+  </joint>
+  <link name="robotiq_85_adapter_link" />
+  <joint name="fixed_right_hand_to_robotiq_85_adapter_link" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="right_hand" />
+    <child link="robotiq_85_adapter_link" />
+  </joint>
+  <link name="eef" />
+  <joint name="fixed_robotiq_85_adapter_link_to_eef" type="fixed">
+    <origin xyz="0 0 0.145" rpy="0 0 -1.570796" />
+    <parent link="robotiq_85_adapter_link" />
+    <child link="eef" />
+  </joint>
+  <link name="kinova3_mujoco_tcp" />
+  <joint name="fixed_to_tcp" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+    <parent link="eef" />
+    <child link="kinova3_mujoco_tcp" />
+  </joint>
+  <link name="left_finger_link" />
+  <joint name="left_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="kinova3_mujoco_tcp" />
+    <child link="left_finger_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2" />
+  </joint>
+  <link name="right_finger_link" />
+  <joint name="right_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="kinova3_mujoco_tcp" />
+    <child link="right_finger_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2" />
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0" />
+  </joint>
+</robot>

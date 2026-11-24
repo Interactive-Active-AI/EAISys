@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bimanual ARX X5A / R5A station (RoboMIND 2.0 Ark) -->
+<robot name="arx_bimanual">
+  <link name="station_base"/>
+
+  <!-- Left ARX X5A -->
+  <link name="left_base_link"/>
+  <link name="left_link1"/>
+  <link name="left_link2"/>
+  <link name="left_link3"/>
+  <link name="left_link4"/>
+  <link name="left_link5"/>
+  <link name="left_link6"/>
+  <link name="left_tcp"/>
+  <link name="left_finger"/>
+
+  <joint name="left_mount" type="fixed">
+    <origin xyz="0.0 0.25 0.0" rpy="0 0 0"/>
+    <parent link="station_base"/>
+    <child link="left_base_link"/>
+  </joint>
+  <joint name="left_joint1" type="revolute">
+    <origin xyz="0 0 0.0605" rpy="0 0 0"/>
+    <parent link="left_base_link"/>
+    <child link="left_link1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.618" upper="2.618" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="left_joint2" type="revolute">
+    <origin xyz="0.02 0 0.04" rpy="0 0 0"/>
+    <parent link="left_link1"/>
+    <child link="left_link2"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.5" upper="3.14" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="left_joint3" type="revolute">
+    <origin xyz="-0.264 0 0" rpy="3.141592653589793 0 0"/>
+    <parent link="left_link2"/>
+    <child link="left_link3"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="3.14" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="left_joint4" type="revolute">
+    <origin xyz="0.245 0 -0.056" rpy="0 0 0"/>
+    <parent link="left_link3"/>
+    <child link="left_link4"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.65" upper="1.65" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="left_joint5" type="revolute">
+    <origin xyz="0.06775 0.0005 -0.0865" rpy="0 0 0"/>
+    <parent link="left_link4"/>
+    <child link="left_link5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.65" upper="1.65" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="left_joint6" type="revolute">
+    <origin xyz="0.02895 0 0.0865" rpy="-3.141592653589793 0 0"/>
+    <parent link="left_link5"/>
+    <child link="left_link6"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14" upper="3.14" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="left_tcp_fixed" type="fixed">
+    <origin xyz="0.086 0 0" rpy="0 0 0"/>
+    <parent link="left_link6"/>
+    <child link="left_tcp"/>
+  </joint>
+  <joint name="left_gripper_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="left_tcp"/>
+    <child link="left_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.088" effort="20" velocity="0.2"/>
+  </joint>
+
+  <!-- Right ARX X5A -->
+  <link name="right_base_link"/>
+  <link name="right_link1"/>
+  <link name="right_link2"/>
+  <link name="right_link3"/>
+  <link name="right_link4"/>
+  <link name="right_link5"/>
+  <link name="right_link6"/>
+  <link name="right_tcp"/>
+  <link name="right_finger"/>
+
+  <joint name="right_mount" type="fixed">
+    <origin xyz="0.0 -0.25 0.0" rpy="0 0 0"/>
+    <parent link="station_base"/>
+    <child link="right_base_link"/>
+  </joint>
+  <joint name="right_joint1" type="revolute">
+    <origin xyz="0 0 0.0605" rpy="0 0 0"/>
+    <parent link="right_base_link"/>
+    <child link="right_link1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.618" upper="2.618" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="right_joint2" type="revolute">
+    <origin xyz="0.02 0 0.04" rpy="0 0 0"/>
+    <parent link="right_link1"/>
+    <child link="right_link2"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.5" upper="3.14" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="right_joint3" type="revolute">
+    <origin xyz="-0.264 0 0" rpy="3.141592653589793 0 0"/>
+    <parent link="right_link2"/>
+    <child link="right_link3"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.2" upper="3.14" effort="50" velocity="3.0"/>
+  </joint>
+  <joint name="right_joint4" type="revolute">
+    <origin xyz="0.245 0 -0.056" rpy="0 0 0"/>
+    <parent link="right_link3"/>
+    <child link="right_link4"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.65" upper="1.65" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="right_joint5" type="revolute">
+    <origin xyz="0.06775 0.0005 -0.0865" rpy="0 0 0"/>
+    <parent link="right_link4"/>
+    <child link="right_link5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.65" upper="1.65" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="right_joint6" type="revolute">
+    <origin xyz="0.02895 0 0.0865" rpy="-3.141592653589793 0 0"/>
+    <parent link="right_link5"/>
+    <child link="right_link6"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14" upper="3.14" effort="30" velocity="3.0"/>
+  </joint>
+  <joint name="right_tcp_fixed" type="fixed">
+    <origin xyz="0.086 0 0" rpy="0 0 0"/>
+    <parent link="right_link6"/>
+    <child link="right_tcp"/>
+  </joint>
+  <joint name="right_gripper_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="right_tcp"/>
+    <child link="right_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.088" effort="20" velocity="0.2"/>
+  </joint>
+</robot>

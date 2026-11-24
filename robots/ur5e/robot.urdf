@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Unseen 6-DoF Universal Robots UR5e + Robotiq 2F-85 (no sidecar required) -->
+<robot name="ur5e">
+  <link name="base_link"/>
+  <link name="shoulder_link"/>
+  <link name="upper_arm_link"/>
+  <link name="forearm_link"/>
+  <link name="wrist_1_link"/>
+  <link name="wrist_2_link"/>
+  <link name="wrist_3_link"/>
+  <link name="ur5e_tcp"/>
+  <link name="left_finger"/>
+  <link name="right_finger"/>
+
+  <joint name="shoulder_pan_joint" type="revolute">
+    <origin xyz="0 0 0.1625" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.2831853" upper="6.2831853" effort="150" velocity="3.14"/>
+  </joint>
+  <joint name="shoulder_lift_joint" type="revolute">
+    <origin xyz="0 0 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="shoulder_link"/>
+    <child link="upper_arm_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.2831853" upper="6.2831853" effort="150" velocity="3.14"/>
+  </joint>
+  <joint name="elbow_joint" type="revolute">
+    <origin xyz="-0.425 0 0" rpy="0 0 0"/>
+    <parent link="upper_arm_link"/>
+    <child link="forearm_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1415926" upper="3.1415926" effort="150" velocity="3.14"/>
+  </joint>
+  <joint name="wrist_1_joint" type="revolute">
+    <origin xyz="-0.3922 0 0.1333" rpy="0 0 0"/>
+    <parent link="forearm_link"/>
+    <child link="wrist_1_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.2831853" upper="6.2831853" effort="28" velocity="3.14"/>
+  </joint>
+  <joint name="wrist_2_joint" type="revolute">
+    <origin xyz="0 -0.0997 0" rpy="1.5707963267948966 0 0"/>
+    <parent link="wrist_1_link"/>
+    <child link="wrist_2_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.2831853" upper="6.2831853" effort="28" velocity="3.14"/>
+  </joint>
+  <joint name="wrist_3_joint" type="revolute">
+    <origin xyz="0 0.0996 0" rpy="1.5707963267948966 3.141592653589793 3.141592653589793"/>
+    <parent link="wrist_2_link"/>
+    <child link="wrist_3_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.2831853" upper="6.2831853" effort="28" velocity="3.14"/>
+  </joint>
+  <joint name="flange_to_tcp" type="fixed">
+    <origin xyz="0 0 0.145" rpy="0 0 0"/>
+    <parent link="wrist_3_link"/>
+    <child link="ur5e_tcp"/>
+  </joint>
+  <joint name="left_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="ur5e_tcp"/>
+    <child link="left_finger"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2"/>
+  </joint>
+  <joint name="right_finger_joint" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="ur5e_tcp"/>
+    <child link="right_finger"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0.0" upper="0.0425" effort="20" velocity="0.2"/>
+    <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0"/>
+  </joint>
+</robot>

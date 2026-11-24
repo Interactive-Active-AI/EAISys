@@ -1,0 +1,22 @@
+robot_id: panda_omron
+control_hz: 20.0
+mobile_base:
+  mode: holonomic_se2
+  joints: [base_x, base_y, base_yaw]
+  max_linear_vel: 0.5
+  max_angular_vel: 1.0
+torso_joints: [torso_lift_joint]
+cameras:
+  - robot0_agentview_left
+  - robot0_eye_in_hand
+  - robot0_agentview_right
+chains:
+  main:
+    root_link: panda_link0
+    tcp_link: panda_hand_tcp
+    joints: [panda_joint1, panda_joint2, panda_joint3, panda_joint4, panda_joint5, panda_joint6, panda_joint7]
+    home_q: [0.0, -0.7854, 0.0, -2.3562, 0.0, 1.5708, 0.7854]
+    end_effector:
+      kind: parallel_gripper
+      max_width: 0.08
+      finger_joints: [panda_finger_joint1]

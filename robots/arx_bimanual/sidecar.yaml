@@ -1,0 +1,25 @@
+robot_id: arx_bimanual
+control_hz: 30.0
+cameras:
+  - camera_top
+  - camera_left
+  - camera_right
+chains:
+  left:
+    root_link: left_base_link
+    tcp_link: left_tcp
+    joints: [left_joint1, left_joint2, left_joint3, left_joint4, left_joint5, left_joint6]
+    home_q: [0.0, 0.8, 0.8, 0.0, 0.0, 0.0]
+    end_effector:
+      kind: parallel_gripper
+      max_width: 0.088
+      finger_joints: [left_gripper_joint]
+  right:
+    root_link: right_base_link
+    tcp_link: right_tcp
+    joints: [right_joint1, right_joint2, right_joint3, right_joint4, right_joint5, right_joint6]
+    home_q: [0.0, 0.8, 0.8, 0.0, 0.0, 0.0]
+    end_effector:
+      kind: parallel_gripper
+      max_width: 0.088
+      finger_joints: [right_gripper_joint]

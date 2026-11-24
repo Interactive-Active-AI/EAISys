@@ -1,0 +1,56 @@
+{
+  "robot_id": "ur5e",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/ur5e.py",
+  "used_common_library": true,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 64900,
+  "total_elapsed_s": 374.155,
+  "verification": {
+    "robot_id": "ur5e",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "main_reset_fk": {
+        "true_tcp_xyz": [
+          0.508,
+          0.1332,
+          0.3077
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "main_directional_errors_m": {
+        "MV_FWD": 0.00014,
+        "MV_BACK": 0.0001,
+        "MV_LEFT": 0.00011,
+        "MV_RIGHT": 0.0001,
+        "MV_UP": 0.00014,
+        "MV_DOWN": 0.00012
+      },
+      "main_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 29860,
+      "elapsed_s": 109.127,
+      "passed": false,
+      "failures": [
+        "[main] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 35040,
+      "elapsed_s": 265.028,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

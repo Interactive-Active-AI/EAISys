@@ -1,0 +1,76 @@
+{
+  "robot_id": "arx_bimanual",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/arx_bimanual.py",
+  "used_common_library": true,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 62208,
+  "total_elapsed_s": 209.8,
+  "verification": {
+    "robot_id": "arx_bimanual",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "left_reset_fk": {
+        "true_tcp_xyz": [
+          0.2638,
+          0.2495,
+          0.3459
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "left_directional_errors_m": {
+        "MV_FWD": 0.0002,
+        "MV_BACK": 0.00024,
+        "MV_LEFT": 0.0004,
+        "MV_RIGHT": 0.0004,
+        "MV_UP": 0.00017,
+        "MV_DOWN": 0.00014
+      },
+      "left_workspace_firewall": {
+        "clamped_safely": true
+      },
+      "right_reset_fk": {
+        "true_tcp_xyz": [
+          0.2638,
+          -0.2505,
+          0.3459
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "right_directional_errors_m": {
+        "MV_FWD": 0.0002,
+        "MV_BACK": 0.00024,
+        "MV_LEFT": 0.0004,
+        "MV_RIGHT": 0.0004,
+        "MV_UP": 0.00017,
+        "MV_DOWN": 0.00014
+      },
+      "right_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 30484,
+      "elapsed_s": 102.059,
+      "passed": false,
+      "failures": [
+        "[left] Workspace bounds never clamped 1.2m runaway MV_FWD motion.",
+        "[right] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 31724,
+      "elapsed_s": 107.741,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

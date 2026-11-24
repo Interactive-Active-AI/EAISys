@@ -1,0 +1,59 @@
+# Declarative multi-embodiment dataset registry.
+# Set EAISYS_DATA_ROOT to your local dataset directory before running `eaisys retarget`.
+
+datasets:
+  libero_v21:
+    adapter: lerobot_v2_libero
+    robot_id: franka_panda
+    domain: sim
+    relative_path: libero/v2.1
+    description: "LIBERO 4-suite no-noop LeRobot v2.1 (Franka Panda 7-DoF)"
+
+  robocasa365_human300:
+    adapter: lerobot_v2_robocasa
+    robot_id: panda_omron
+    domain: sim
+    relative_path: robocasa365/datasets/v1.0/pretrain
+    description: "RoboCasa365 Human300 kitchen mobile manipulation (PandaOmron)"
+
+  robotwin_clean:
+    adapter: lerobot_v2_bimanual
+    robot_id: aloha
+    domain: sim
+    relative_path: RoboTwin-Clean
+    description: "RoboTwin 50 bimanual tasks in LeRobot v2.1 format (ALOHA 2x6-DoF)"
+
+  dual_franka_real:
+    adapter: lerobot_v3_packed
+    robot_id: dual_franka
+    domain: real
+    relative_path: dual_franka/lerobot_v3
+    description: "Real bimanual Franka LeRobot v3 trajectories (2x7-DoF)"
+
+  robomind2_ark:
+    adapter: robomind_hdf5
+    robot_id: arx_bimanual
+    domain: real
+    relative_path: RoboMIND2.0-Ark/data/ark
+    description: "RoboMIND 2.0 ARX stationary bimanual HDF5 (54 tasks, 14,857 episodes)"
+
+  robomind2_ark_mobile:
+    adapter: robomind_hdf5
+    robot_id: arx_mobile
+    domain: real
+    relative_path: RoboMIND2.0-Ark-mobile/data/ark_mobile
+    description: "RoboMIND 2.0 ARX mobile bimanual HDF5 (21 tasks, 4,295 episodes)"
+
+  aloha_mobile_real:
+    adapter: aloha_hdf5
+    robot_id: aloha
+    domain: real
+    relative_path: aloha_mobile/pick_and_place
+    description: "Real ALOHA-Mobile HDF5 trajectories with joint, EEF, and base streams"
+
+  agibot_world_beta:
+    adapter: agibot_task_info
+    robot_id: agibot_g1
+    domain: real
+    relative_path: AgiBotWorld-Beta/data/task_info
+    description: "AgiBot World human frame-level atomic skill boundary annotations"

@@ -1,0 +1,56 @@
+{
+  "robot_id": "kinova_gen3",
+  "model": "gpt-6.1-sol",
+  "urdf_path": "robot.urdf",
+  "output_module_path": "harnesses/embodiments/kinova_gen3.py",
+  "used_common_library": true,
+  "num_demos_provided": 0,
+  "passed": true,
+  "attempts": 2,
+  "total_tokens": 60250,
+  "total_elapsed_s": 203.762,
+  "verification": {
+    "robot_id": "kinova_gen3",
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "main_reset_fk": {
+        "true_tcp_xyz": [
+          0.406,
+          -0.5293,
+          0.3343
+        ],
+        "fk_discrepancy_m": 0.0
+      },
+      "main_directional_errors_m": {
+        "MV_FWD": 0.00018,
+        "MV_BACK": 9e-05,
+        "MV_LEFT": 7e-05,
+        "MV_RIGHT": 0.00012,
+        "MV_UP": 0.00013,
+        "MV_DOWN": 0.00012
+      },
+      "main_workspace_firewall": {
+        "clamped_safely": true
+      }
+    }
+  },
+  "turns": [
+    {
+      "attempt": 1,
+      "tokens_used": 28209,
+      "elapsed_s": 60.489,
+      "passed": false,
+      "failures": [
+        "[main] Workspace bounds never clamped 1.2m runaway MV_FWD motion."
+      ]
+    },
+    {
+      "attempt": 2,
+      "tokens_used": 32041,
+      "elapsed_s": 143.273,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}

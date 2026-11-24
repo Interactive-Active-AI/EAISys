@@ -1,0 +1,7 @@
+{
+  "model": "gpt-6.1-sol",
+  "output_path": "harnesses/common/urdf_interpreter_base.py",
+  "tokens_used": 40456,
+  "elapsed_s": 348.219,
+  "lines_of_code": 244
+}
